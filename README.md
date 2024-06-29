@@ -61,3 +61,25 @@ const ScreenComponent = () => {
 };
 
 export default App;
+
+
+In rn, when the View flexDirection is set to "row-reverse," margin-right is displayed as the visual left on iOS, while Harmony is the visual right.
+
+<View style={{ backgroundColor: "grey", width: 300, marginLeft: 20 }}>
+<View
+style={{
+width: 260,
+// marginRight: 20,
+marginEnd: 20,
+backgroundColor: "green",
+flexDirection: "row-reverse"
+}}>
+<View
+style={{
+width: 40,
+height: 40,
+backgroundColor: "red"
+}}
+/>
+</View>
+</View>
