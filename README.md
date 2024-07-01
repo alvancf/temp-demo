@@ -1,3 +1,5 @@
+I think this should be fixable by moving the responsibility of adjusting scroll position on RNOH side, however that increases a risk of introducing other issues.
+
 Hello,If the KeyboardAvoidingView component contains the ScrollView component, the display effect is incorrect.
 When the behavior attribute of the KeyboardAvoidingView component is set to {"padding"} or {"height"}, 
 if the input box is at the bottom of the ScrollView list, the input box does not move up when the keyboard pops up.
