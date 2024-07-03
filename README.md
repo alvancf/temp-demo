@@ -1,3 +1,5 @@
+https://gl.swmansion.com/rnoh/react-native-harmony/-/issues/1131
+
 import * as React from 'react';
 import {Animated, FlatList, ViewStyle, StyleProp, View} from 'react-native';
 // import FastImage from 'react-native-fast-image';
