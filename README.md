@@ -1,15 +1,81 @@
-我想我们已经发现了问题。
-在ScrollViewComponentInstance中，我们限制滚动事件的处理，以避免：
-向JS端发送过多事件
-过于频繁地运行动画更新，而结果并不明显
+在鸿蒙中，当我们使用fetch获取本地svg图片信息时，metro热加载的方式可以正常获取，但是打包到bundle就获取不到，其他系统是可以正常获取到的
 
-在第二点上，节流似乎过于激进，可能会导致某些动画出现问题，就像在您的情况下一样。
-如果我们不为动画节流事件，结果看起来不错。我们将在今天或明天做出改变。
+In Harmony, when fetch is used to obtain the local svg image information, metro hot loading can be obtained.
 
-I  think we've found the issue.
-In ScrollViewComponentInstance we throttle processing of scroll events, to avoid:
-sending too many events to the JS side
-running animation updates too often, when the result would not be noticeable
-﻿
-It looks like, for that second point, the throttling is too aggressive and may cause issues with some animations, like it does in your case.
-If we don't throttle the events for animations, the result looks fine. We'll make that change today or tomorrow.
+import React, {useEffect, useState, Component} from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  SafeAreaView,
+  Image,
+} from 'react-native';
+import resolveAssetSource from 'react-native/Libraries/Image/resolveAssetSource';
+
+export default function () {
+  const [svgText, setSvgText] = useState('');
+  // 本地svg文件的路径
+  const uri = require('./1.svg');
+  const source = resolveAssetSource(uri);
+  fetch(source.uri)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`fetch error! status: ${response.status}`);
+      }
+      return response.text();
+    })
+    .then(svgText => {
+      console.log(`fetch local svg file: ${svgText}`);
+      setSvgText(svgText);
+    })
+    .catch(error => {
+      console.error(
+        'There has been a problem with your fetch operation:',
+        error,
+      );
+    });
+
+  return (
+    <SafeAreaView style={styles.container}>
+      <ScrollView>
+        <Image
+          style={styles.tinyLogo}
+          source={require('../../../assets/1.svg')}
+        />
+        <Image
+          style={styles.tinyLogo}
+          source={{
+            uri: 'https://reactnative.dev/img/tiny_logo.png',
+          }}
+        />
+        <Text style={styles.label}>Local SVG XML uri:</Text>
+        <Text style={styles.text}>{source.uri}</Text>
+        <Text style={styles.label}>Local SVG XML content:</Text>
+        <Text style={styles.text}>{svgText}</Text>
+      </ScrollView>
+    </SafeAreaView>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    marginTop: 20,
+    padding: 20,
+  },
+  section: {
+    marginBottom: 20,
+  },
+  label: {
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  text: {
+    lineHeight: 24,
+  },
+  tinyLogo: {
+    width: 50,
+    height: 50,
+  },
+});
