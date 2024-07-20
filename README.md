@@ -1,1 +1,1 @@
-在APP的color.json中添加的颜色资源，通过PlatformColor接口无法获取到颜色值
+RN平台， JsBundle通过hermesc工具转码后，性能明显提升，但是连续频繁加载hbc文件，容易出现AppCrash
