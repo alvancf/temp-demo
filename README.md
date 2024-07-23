@@ -1,3 +1,34 @@
+Pressing the button will cause the switch to enter an infinite loop.
+
+import React, { useState } from "react";
+import { View, Switch, StyleSheet, Button } from "react-native";
+
+const App = () => {
+  const [isEnabled, setIsEnabled] = useState(false);
+
+  return (
+    <View style={styles.container}>
+      <Switch
+        trackColor={{ false: "#767577", true: "#81b0ff" }}
+        thumbColor={isEnabled ? "#f5dd4b" : "#f4f3f4"}
+        ios_backgroundColor="#3e3e3e"
+        onValueChange={()=>setIsEnabled(!isEnabled)}
+        value={isEnabled}
+      />
+      <Button title="button" onPress={() => setIsEnabled(true)} />
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "space-around"
+  }
+});
+
+export default App;
 RN平台， JsBundle通过hermesc工具转码后，性能明显提升，但是连续频繁加载hbc文件，容易出现AppCrash
 Device info:HUAWEI Mate 60 Pro
 Build info:ALN-AL00 5.0.0.26(SP8DEVC00E29R4P6log)
