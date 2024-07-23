@@ -1,4 +1,5 @@
-Pressing the button will cause the switch to enter an infinite loop.
+After pressing the button, the Switch falls into an infinite loop. This does not happen on iOS.
+
 
 import React, { useState } from "react";
 import { View, Switch, StyleSheet, Button } from "react-native";
