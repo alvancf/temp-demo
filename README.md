@@ -1,35 +1,12 @@
-After pressing the button, the Switch falls into an infinite loop. This does not happen on iOS.
+https://gl.swmansion.com/rnoh/react-native-harmony/-/issues/1190  (platformcolor)
+
+https://gl.swmansion.com/rnoh/react-native-harmony/-/issues/1131     flexDirection is set to "row-reverse,"
+https://gl.swmansion.com/rnoh/react-native-harmony/-/issues/1099  axios传中文的问题
+https://gl.swmansion.com/rnoh/react-native-harmony/-/issues/1167 RNViewBase居中的问题
+https://gl.swmansion.com/rnoh/react-native-harmony/-/issues/1113   ClipPathView问题
 
 
-import React, { useState } from "react";
-import { View, Switch, StyleSheet, Button } from "react-native";
 
-const App = () => {
-  const [isEnabled, setIsEnabled] = useState(false);
-
-  return (
-    <View style={styles.container}>
-      <Switch
-        trackColor={{ false: "#767577", true: "#81b0ff" }}
-        thumbColor={isEnabled ? "#f5dd4b" : "#f4f3f4"}
-        ios_backgroundColor="#3e3e3e"
-        onValueChange={()=>setIsEnabled(!isEnabled)}
-        value={isEnabled}
-      />
-      <Button title="button" onPress={() => setIsEnabled(true)} />
-    </View>
-  );
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "space-around"
-  }
-});
-
-export default App;
 RN平台， JsBundle通过hermesc工具转码后，性能明显提升，但是连续频繁加载hbc文件，容易出现AppCrash
 Device info:HUAWEI Mate 60 Pro
 Build info:ALN-AL00 5.0.0.26(SP8DEVC00E29R4P6log)
