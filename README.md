@@ -1,8 +1,8 @@
 https://gl.swmansion.com/rnoh/react-native-harmony/-/issues/1190  (platformcolor)
 
 https://gl.swmansion.com/rnoh/react-native-harmony/-/issues/1131     flexDirection is set to "row-reverse,"
-https://gl.swmansion.com/rnoh/react-native-harmony/-/issues/1099  axios传中文的问题
-https://gl.swmansion.com/rnoh/react-native-harmony/-/issues/1167 RNViewBase居中的问题
+https://gl.swmansion.com/rnoh/react-native-harmony/-/issues/1099  axios传中文的问题  close
+https://gl.swmansion.com/rnoh/react-native-harmony/-/issues/1167 RNViewBase居中的问题  close
 https://gl.swmansion.com/rnoh/react-native-harmony/-/issues/1113   ClipPathView问题
 
 
