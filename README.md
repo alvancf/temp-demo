@@ -5,7 +5,7 @@ https://gl.swmansion.com/rnoh/react-native-harmony/-/issues/1099  axios传中文
 https://gl.swmansion.com/rnoh/react-native-harmony/-/issues/1167 RNViewBase居中的问题  close
 https://gl.swmansion.com/rnoh/react-native-harmony/-/issues/1113   ClipPathView问题
 
-
+Expected effect: Two fingers can control image zooming, a feature that works normally on both Android and iOS. In the HarmonyOS RN framework, the parameters passed into the two-finger callback function do not match the time-triggered parameters used in the source code for judgment, rendering the two-finger events ineffective.
 
 Harmony In the RN framework, the input parameter of the two-finger callback function is inconsistent with that in the source code.
 
