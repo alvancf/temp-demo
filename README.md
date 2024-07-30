@@ -5,7 +5,38 @@ https://gl.swmansion.com/rnoh/react-native-harmony/-/issues/1099  axios传中文
 https://gl.swmansion.com/rnoh/react-native-harmony/-/issues/1167 RNViewBase居中的问题  close
 https://gl.swmansion.com/rnoh/react-native-harmony/-/issues/1113   ClipPathView问题
 
-Expected effect: Two fingers can control image zooming, a feature that works normally on both Android and iOS. In the HarmonyOS RN framework, the parameters passed into the two-finger callback function do not match the time-triggered parameters used in the source code for judgment, rendering the two-finger events ineffective.
+
+效果不一致
+import React, {useEffect} from 'react';
+import {Text, View} from 'react-native';
+import axios from 'axios';
+
+const url =
+  'https://openapi.vmall.com/ccs/question/queryQuestionOverview?productId=中文&_becode=CN&displayUnPublic=false&displayTopQuestion=true';
+
+function App() {
+  useEffect(() => {
+    const asyncFun = async () => {
+      try {
+        const response = await axios.get(url);
+        console.log('response data', response.data, response.status);
+        return response;
+      } catch (e) {
+        console.error('Error fetching data', e);
+        return e;
+      }
+    };
+    asyncFun();
+  }, []);
+
+  return (
+    <View style={{marginTop: 50}}>
+      <Text>Check console logs</Text>
+    </View>
+  );
+}
+
+export default App;
 
 Harmony In the RN framework, the input parameter of the two-finger callback function is inconsistent with that in the source code.
 
