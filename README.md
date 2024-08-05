@@ -11,19 +11,28 @@ response data {"code": "2000000", "count": 0, "productId": "ä¸­æ", "question
 response data {"code": "2000000", "count": 0, "productId": "中文", "questionStatus": 0, "questionType": "c2b", "success": true, "topQuestions": []} 200 
 
 效果不一致
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Text, View} from 'react-native';
 import axios from 'axios';
 
 const url =
   'https://openapi.vmall.com/ccs/question/queryQuestionOverview?productId=中文&_becode=CN&displayUnPublic=false&displayTopQuestion=true';
 
-function App() {
+const str = encodeURIComponent('中文');
+const url2 = `https://openapi.vmall.com/ccs/question/queryQuestionOverview?productId=${str}&_becode=CN&displayUnPublic=false&displayTopQuestion=true`;
+
+function App(): JSX.Element {
+  const [selectedIndex, setSelectedIndex] = useState('ccc');
+  const [selectedIndex2, setSelectedIndex2] = useState('ccc2');
   useEffect(() => {
     const asyncFun = async () => {
       try {
         const response = await axios.get(url);
         console.log('response data', response.data, response.status);
+        setSelectedIndex(response.data.productId);
+        const response2 = await axios.get(url2);
+        console.log('response2 data', response2.data, response2.status);
+        setSelectedIndex2(response2.data.productId);
         return response;
       } catch (e) {
         console.error('Error fetching data', e);
@@ -35,12 +44,14 @@ function App() {
 
   return (
     <View style={{marginTop: 50}}>
-      <Text>Check console logs</Text>
+      <Text>{selectedIndex}</Text>
+      <Text>{selectedIndex2}</Text>
     </View>
   );
 }
 
 export default App;
+
 
 Harmony In the RN framework, the input parameter of the two-finger callback function is inconsistent with that in the source code.
 
