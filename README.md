@@ -1,5 +1,8 @@
 https://gl.swmansion.com/rnoh/react-native-harmony/-/merge_requests/1439)
-https://gl.swmansion.com/rnoh/react-native-harmony/-/issues/1190  (platformcolor)
+https://gl.swmansion.com/rnoh/react-native-harmony/-/issues/1190  (platformcolor)  Rafał Moneta
+IDE：5.0.3.500
+SDK：HarmonyOS NEXT Developer Beta2  5.0.0.31
+晚上我用这个方法验证没啥问题，传入了错的ID，ID在color.json中没有的时候才返回了这个错
 
 https://gl.swmansion.com/rnoh/react-native-harmony/-/issues/1131     flexDirection is set to "row-reverse,"
 https://gl.swmansion.com/rnoh/react-native-harmony/-/issues/1099  axios传中文的问题  close
