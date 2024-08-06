@@ -6,6 +6,11 @@ https://gl.swmansion.com/rnoh/react-native-harmony/-/issues/1099  axios传中文
 https://gl.swmansion.com/rnoh/react-native-harmony/-/issues/1167 RNViewBase居中的问题  close
 https://gl.swmansion.com/rnoh/react-native-harmony/-/issues/1113   ClipPathView问题
 
+https://github.com/ascoders/react-native-image-zoom/blob/master/src/image-zoom/image-zoom.component.tsx
+    onMoveShouldSetPanResponder: this.props.onMoveShouldSetPanResponder,
+    onPanResponderTerminationRequest
+
+
 这个问题,还没解决。
 response data {"code": "2000000", "count": 0, "productId": "ä¸­æ", "questionStatus": 0, "questionType": "c2b", "success": true, "topQuestions": []} 200   
 response data {"code": "2000000", "count": 0, "productId": "中文", "questionStatus": 0, "questionType": "c2b", "success": true, "topQuestions": []} 200 
