@@ -1,3 +1,67 @@
+import { Tester, TestSuite, TestCase } from '@rnoh/testerino';
+import React, { useEffect, useRef, useState } from 'react';
+import { View, TextInput, StyleSheet, Dimensions, Text, ScrollView } from 'react-native';
+
+
+function BugMeasureDemo() {
+    
+    const viewRef = useRef<View | null>(null);
+    
+    const [pageH, setpageH] = useState(0);
+    
+    const [measurePageY, setmeasurePageY] = useState(0);
+    
+    useEffect(() => {
+        setpageH( Dimensions.get('window').height);
+        const tid = setInterval(getPageY, 1000);
+        return () => {
+            clearInterval(tid);
+        }
+    }, []);
+    
+    const getPageY = () => {
+        viewRef.current?.measure((x, y, width, height, pageX, pageY) => {
+            setmeasurePageY(pageY);
+        });
+    } 
+    
+    return (
+        <>
+            <ScrollView>
+            <Tester>
+                <TestSuite name='Measure Bug'>
+                    {
+                        Array.from({length: 12}).map((_, i) => 
+                        <TestCase key={i} itShould={`TextInput ${i}`}>
+                            <TextInput style={styles.inp} />
+                        </TestCase>
+                        )
+                    }
+                    <TestCase itShould={`点击输入框键盘弹起，计算的PageY发生错误`}>
+                        <Text>windowHeight: {pageH}</Text>
+                        <Text>PageY: {measurePageY}</Text>
+                        <View ref={viewRef}>
+                            <TextInput style={[styles.inp, {borderColor: '#000'}]} />
+                        </View>
+                    </TestCase>
+                </TestSuite>
+            </Tester>
+            </ScrollView>
+        </>
+    )
+}
+
+const styles = StyleSheet.create({
+    inp: {
+        height: 36,
+        borderWidth: 1,
+        borderColor: '#f0f0f0',
+        borderRadius: 6
+    }
+})
+
+export default BugMeasureDemo
+
 https://gl.swmansion.com/rnoh/react-native-harmony/-/merge_requests/1439)
 https://gl.swmansion.com/rnoh/react-native-harmony/-/issues/1190  (platformcolor)  Rafał Moneta
 IDE：5.0.3.500
