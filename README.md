@@ -1,3 +1,5 @@
+'āáǎà'.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+
 import { Tester, TestSuite, TestCase } from '@rnoh/testerino';
 import React, { useEffect, useRef, useState } from 'react';
 import { View, TextInput, StyleSheet, Dimensions, Text, ScrollView } from 'react-native';
