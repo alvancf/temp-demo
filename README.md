@@ -1,16 +1,9 @@
-function removeDiacritics(str) {
-    const diacriticsMap = {
-        'ā': 'a', 'á': 'a', 'ǎ': 'a', 'à': 'a',
-        'ē': 'e', 'é': 'e', 'ě': 'e', 'è': 'e',
-        // 添加更多的映射
-    };
-
-    return str.split('').map(char => diacriticsMap[char] || char).join('');
-}
-
 let str = 'āáǎà';
-let result = removeDiacritics(str);
+let result = str.replace(/[^\u0000-\u007E]/g, function(c) {
+    return c.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+});
 console.log(result); // 输出: 'aaaa'
+
 
 
 import React, { useEffect, useRef, useState } from 'react';
