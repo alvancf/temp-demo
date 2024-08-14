@@ -1,3 +1,17 @@
+function removeDiacritics(str) {
+    return str.split('').map(char => {
+        const code = char.charCodeAt(0);
+        if (code >= 768 && code <= 879) {
+            return ''; // 组合符号范围
+        }
+        return char.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    }).join('');
+}
+
+let str = 'āáǎà';
+let result = removeDiacritics(str);
+console.log(result); // 输出: 'aaaa'
+
 import React, { useEffect, useRef, useState } from 'react';
 import { View, TextInput, StyleSheet, Dimensions, Text, ScrollView, Button, Switch } from 'react-native';
 
