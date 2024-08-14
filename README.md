@@ -1,3 +1,28 @@
+<FlashList
+    className="w-screen h-240 p-0"
+    data={list}
+    keyExtractor={(item) => getGiftId(item)}
+    renderItem={({ item }) => {
+    return <GiftItem giftItem={item} tabItem={tabItem} />;
+    }}
+    numColumns={4}
+    estimatedItemSize={100}
+/>
+// list.length 为 200 左右，<GiftItem /> 代码如下，
+const GiftItem = React.memo(({ giftItem, tabItem }) => {
+return (
+<View
+    style={{
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 100,
+    }}>
+</View>
+);
+});
+
+
 'āáǎà'.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
 
 import { Tester, TestSuite, TestCase } from '@rnoh/testerino';
