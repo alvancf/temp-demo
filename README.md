@@ -1,3 +1,34 @@
+import React, { useEffect, useRef, useState } from 'react';
+import { View, TextInput, StyleSheet, Dimensions, Text, ScrollView, Button, Switch } from 'react-native';
+
+
+const OnResponderMoveExample = () => {
+  const [isEnabled, setIsEnabled] = React.useState(false);
+  const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+  const [params, setParams] = React.useState('')
+  const [str, setStr] = React.useState('准备执行')
+  return (
+    <View    onResponderMove={(event) => {
+      setStr('执行完毕')
+      setParams(JSON.stringify(event.nativeEvent))
+    }}>
+      <Text>属性值: {"onResponderMove={(event) => {setStr('执行完毕')}}"}</Text>
+      <Text>预期效果:{'点击Switch后：“准备执行”变“成执行完毕”，参数打印打印出参数值'}</Text>
+      <Text>实际效果</Text>
+      <Switch
+   
+      onValueChange={toggleSwitch}
+       value={isEnabled}
+      />
+      <Text>{str}</Text>
+      <Text>参数打印：</Text>
+      <Text>{params}</Text>
+    </View>
+  );
+}
+
+export default OnResponderMoveExample
+
 import React, { memo } from 'react';
 import { FlatList, View, Text, StyleSheet } from 'react-native';
 
