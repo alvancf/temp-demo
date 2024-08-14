@@ -45,48 +45,7 @@ const styles = StyleSheet.create({
 });
 
 export default MyFlatListDemo;
-const list = [
-  { id: 1, name: 'Gift 1' },
-  { id: 2, name: 'Gift 2' },
-  { id: 3, name: 'Gift 3' },
-  { id: 4, name: 'Gift 4' },
-  { id: 5, name: 'Gift 5' },
-  { id: 6, name: 'Gift 6' },
-  { id: 7, name: 'Gift 7' },
-  { id: 8, name: 'Gift 8' },
-  { id: 9, name: 'Gift 9' },
-  { id: 10, name: 'Gift 10' },
-  { id: 11, name: 'Gift 11' },
-  { id: 12, name: 'Gift 12' },
-  { id: 13, name: 'Gift 13' },
-  { id: 14, name: 'Gift 14' },
-  { id: 15, name: 'Gift 15' },
-  { id: 16, name: 'Gift 16' },
-  { id: 17, name: 'Gift 17' },
-  { id: 18, name: 'Gift 18' },
-  { id: 19, name: 'Gift 19' },
-  { id: 20, name: 'Gift 20' },
-  { id: 21, name: 'Gift 21' },
-  { id: 22, name: 'Gift 22' },
-  { id: 23, name: 'Gift 23' },
-  { id: 24, name: 'Gift 24' },
-  { id: 25, name: 'Gift 25' },
-  { id: 26, name: 'Gift 26' },
-  { id: 27, name: 'Gift 27' },
-  { id: 28, name: 'Gift 28' },
-  { id: 29, name: 'Gift 29' },
-  { id: 30, name: 'Gift 30' },
-  { id: 31, name: 'Gift 31' },
-  { id: 32, name: 'Gift 32' },
-  { id: 33, name: 'Gift 33' },
-  { id: 34, name: 'Gift 34' },
-  { id: 35, name: 'Gift 35' },
-  { id: 36, name: 'Gift 36' },
-  { id: 37, name: 'Gift 37' },
-  { id: 38, name: 'Gift 38' },
-  { id: 39, name: 'Gift 39' },
-  { id: 40, name: 'Gift 40' },
-];
+
 
 
 
