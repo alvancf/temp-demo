@@ -1,16 +1,17 @@
 function removeDiacritics(str) {
-    return str.split('').map(char => {
-        const code = char.charCodeAt(0);
-        if (code >= 768 && code <= 879) {
-            return ''; // 组合符号范围
-        }
-        return char.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-    }).join('');
+    const diacriticsMap = {
+        'ā': 'a', 'á': 'a', 'ǎ': 'a', 'à': 'a',
+        'ē': 'e', 'é': 'e', 'ě': 'e', 'è': 'e',
+        // 添加更多的映射
+    };
+
+    return str.split('').map(char => diacriticsMap[char] || char).join('');
 }
 
 let str = 'āáǎà';
 let result = removeDiacritics(str);
 console.log(result); // 输出: 'aaaa'
+
 
 import React, { useEffect, useRef, useState } from 'react';
 import { View, TextInput, StyleSheet, Dimensions, Text, ScrollView, Button, Switch } from 'react-native';
