@@ -1,8 +1,7 @@
-let str = 'āáǎà';
-let result = str.replace(/[^\u0000-\u007E]/g, function(c) {
-    return c.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-});
-console.log(result); // 输出: 'aaaa'
+ <Text style={{height: 100,backgroundColor: 'red', lineHeight: 30}}>height100,lineHeight30</Text>
+          <Text style={{height: 100,backgroundColor: 'blue', lineHeight: 70}}>height100,lineHeight70</Text>
+          <Text style={{height: 100,backgroundColor: 'green', lineHeight: 100}}>height100,lineHeight100</Text>
+          <Text style={{height: 100,backgroundColor: 'purple', lineHeight: 180,marginBottom: 50}}>height100,lineHeight180</Text>
 
 
 
