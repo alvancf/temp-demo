@@ -1,3 +1,14 @@
+   let { contentOffset, contentHeight, layoutHeight } = this.state;
+    if (contentOffset && contentHeight) {
+      contentOffset *= (height - layoutHeight) / (contentHeight - layoutHeight);
+      (contentOffset < 0) && (contentOffset = 0);
+      this.scrollTo({ y: contentOffset, animated: false });
+      this._scrollAnimatedValue.setValue(contentOffset);
+    }
+    this.setState({
+      contentOffset,
+      contentHeight: height
+    });
 flashScrollIndicators 
 const debounce = (func, delay) => {
   let timeout;
