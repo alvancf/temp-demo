@@ -1,6 +1,65 @@
 import React from 'react';
 import { SafeAreaView, View, VirtualizedList, StyleSheet, Text } from 'react-native';
 import Constants from 'expo-constants';
+
+const GENERATED_DATA = Array.from({length: 100}, (_, index) => ({
+  id: Math.random().toString(12).substring(0),
+  title: `Item ${index + 1}`,
+}));
+
+      <View style={styles.viewStyle}>
+        <View testID="test_container" style={styles.testContainer}>
+            <Text style={{paddingTop:10,paddingLeft:10}}>实际效果:</Text>
+            <Button
+            title='Toggle1'
+            onPress={() => {ref.current.scrollToItem({item: GENERATED_DATA[2], animated: true});} }
+            ></Button>
+          <Button
+            title='Toggle2'
+            onPress={() => {
+              ref.current?.scrollToItem({
+                animated: true,
+                item: CCDATA[2],
+              });
+            }}
+          ></Button>
+        </View>
+        <VirtualizedList
+            ref = {ref}
+            initialNumToRender={10}
+            data={CCDATA}
+            renderItem={(item) => <Item title={item.title} />}
+            keyExtractor={item => item.id}
+            getItemCount={() => CCDATA.length}
+            getItem={(data, index) => CCDATA[index]}
+            />
+        {/* <VirtualizedList
+          data={DATA}
+          initialNumToRender={4}
+          renderItem={({ item }) => <Item title={item.title} />}
+          keyExtractor={item => item.key}
+          getItemCount={getItemCount}
+          getItem={getItem}
+        /> */}
+        {/* <FlatList
+          ref={ref}
+          renderItem={({ item }) => <Item title={item.title} />}
+          keyExtractor={item => item.id}
+          data={DATA}
+        /> */}
+      </View>
+
+ viewStyle:{
+      width:300,
+      height:240,
+      marginBottom:30,
+      borderWidth:1,
+      borderColor:'black',
+      borderStyle:'solid',
+      marginLeft:40,
+    },
+
+
 const DATA = [];
 const getItem = (data, index) => {
   return {
