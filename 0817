@@ -1,7 +1,13 @@
 import React from 'react';
 import { SafeAreaView, View, VirtualizedList, StyleSheet, Text } from 'react-native';
 import Constants from 'expo-constants';
-
+    testContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        backgroundColor: '#f2f2f7ff',
+        height: 40,
+      },
 const GENERATED_DATA = Array.from({length: 100}, (_, index) => ({
   id: Math.random().toString(12).substring(0),
   title: `Item ${index + 1}`,
