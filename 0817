@@ -8,11 +8,25 @@ import Constants from 'expo-constants';
         backgroundColor: '#f2f2f7ff',
         height: 40,
       },
+ item: {
+      backgroundColor: '#f9c2ff',
+      height: 40,
+      justifyContent: 'center',
+      marginVertical: 8,
+      marginHorizontal: 16,
+    },
+    title: {
+      fontSize: 32,
+    },
 const GENERATED_DATA = Array.from({length: 100}, (_, index) => ({
   id: Math.random().toString(12).substring(0),
   title: `Item ${index + 1}`,
 }));
-
+    const Item = ({title}) => (
+      <View style={styles.item}>
+        <Text style={styles.title}>{title}</Text>
+      </View>
+    );
       <View style={styles.viewStyle}>
         <View testID="test_container" style={styles.testContainer}>
             <Text style={{paddingTop:10,paddingLeft:10}}>实际效果:</Text>
