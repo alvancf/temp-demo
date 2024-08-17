@@ -1,3 +1,4 @@
+flashScrollIndicators 
 const debounce = (func, delay) => {
   let timeout;
   return function (...args) {
