@@ -1,3 +1,20 @@
+const debounce = (func, delay) => {
+  let timeout;
+  return function (...args) {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => func.apply(this, args), delay);
+  };
+};
+
+const scrollToSpecificItem = debounce(() => {
+  flatListRef.current.scrollToItem({
+    item: DATA[49],
+    animated: true,
+    viewPosition: 0.5,
+  });
+}, 300); // 防抖处理，300ms 内只触发一次
+
+
 import React from 'react';
 import { SafeAreaView, View, VirtualizedList, StyleSheet, Text } from 'react-native';
 import Constants from 'expo-constants';
@@ -44,15 +61,15 @@ const GENERATED_DATA = Array.from({length: 100}, (_, index) => ({
             }}
           ></Button>
         </View>
-        <VirtualizedList
-            ref = {ref}
-            initialNumToRender={10}
-            data={CCDATA}
-            renderItem={(item) => <Item title={item.title} />}
-            keyExtractor={item => item.id}
-            getItemCount={() => CCDATA.length}
-            getItem={(data, index) => CCDATA[index]}
-            />
+                 <VirtualizedList
+              ref = {vRef}
+              initialNumToRender={10}
+              data={GENERATED_DATA}
+              renderItem={(item) => <Item title={item.title} />}
+              keyExtractor={item => item.id}
+              getItemCount={() => GENERATED_DATA.length}
+              getItem={(data, index) => GENERATED_DATA[index]}
+              />
         {/* <VirtualizedList
           data={DATA}
           initialNumToRender={4}
