@@ -1,15 +1,41 @@
-   let { contentOffset, contentHeight, layoutHeight } = this.state;
-    if (contentOffset && contentHeight) {
-      contentOffset *= (height - layoutHeight) / (contentHeight - layoutHeight);
-      (contentOffset < 0) && (contentOffset = 0);
-      this.scrollTo({ y: contentOffset, animated: false });
-      this._scrollAnimatedValue.setValue(contentOffset);
-    }
-    this.setState({
-      contentOffset,
-      contentHeight: height
-    });
-flashScrollIndicators 
+  _handleContentOnLayout = (e: LayoutEvent) => {
+    const { width, height } = e.nativeEvent.layout;
+      /**
+       * RNOH patch - Fixed the issue where sticky headers are in disordered position after foldable phone is expanded/folded.
+       * When a foldable phone is expanded/folded, the height of the list items often changes,
+       * causing the content height of the ScrollView to change.
+       * But since the scroll event is not triggered, the position of the sticky headers is 
+       * still offset according to the original content height.
+       * So we should recalculate the contentOffset based on the new contentHeight and trigger 
+       * the scroll event to fix the position of sticky headers
+       */
+      let { contentOffset, contentHeight, layoutHeight } = this.state;
+      if (contentOffset && contentHeight) {
+        console.log('contentOffset:', contentOffset)
+        console.log('layoutHeight:', layoutHeight)
+        console.log('contentHeight:', contentHeight)
+        console.log('layoutHeight:', layoutHeight)
+        console.log('height:', height)
+        contentOffset *= (height - layoutHeight) / (contentHeight - layoutHeight);
+  
+        (contentOffset < 0) && (contentOffset = 0);
+        // 2042 1986
+        console.log('contentOffset:', contentOffset)
+        this.scrollTo({ y: contentOffset, animated: false });
+        this._scrollAnimatedValue.setValue(contentOffset);
+      }
+      this.setState({
+        contentOffset,
+        contentHeight: height
+      });
+      /**
+       * 本意是在折叠屏屏幕变化时，触发layout事件，根据当前滚动条的位置去重新计算滚动条应该加载的位置
+       * 但是在虚拟列表中，触发scrollTo的过程中，也会触发layout事件，使用Animate时scrollTo还没完全完成，导致拿到的滚动条位置是错的！
+       * 等scrollTo加载完成再去拿位置，动画加载的默认时间大概是250ms，设置这个时间为250ms
+      */
+      this.props.onContentSizeChange &&
+        this.props.onContentSizeChange(width, height);
+  };
 const debounce = (func, delay) => {
   let timeout;
   return function (...args) {
