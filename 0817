@@ -1,3 +1,59 @@
+import React, {useEffect, useState} from 'react';
+import {Text} from 'react-native';
+
+function App(): JSX.Element {
+  useEffect(() => {
+    // 组件挂载后执行的代码
+    console.log('Component mounted!');
+    let formData = new FormData();
+    let file = {
+      uri: '/data/storage/el2/base/haps/entry/cache/ReactNative_cropped_image_1718181899621.jpg',
+      type: 'image/jpeg', //type: 'multipart/form-data',
+      name: 'IMG',
+    };
+    formData.append('files', file);
+    // formData = {
+    //   cc: 222,
+    // };
+    // formData.append('files', JSON.stringify(file));
+    fetch('https://www.baidu.com', {
+      method: 'post',
+      headers: {
+        'content-Type': 'multipart/form-data',
+      },
+      // headers: {
+      //   'content-Type': 'application/json',
+      // },
+      body: formData,
+    }).then(req => {
+      console.log('req:', req);
+      setSelectedIndex(2);
+      req.json();
+    });
+
+    // 返回一个清理函数，组件卸载时执行
+    return () => {
+      console.log('Component unmounted!');
+      // 在这里清除定时器、取消网络请求或移除订阅等
+    };
+  }, []); // 空数组表示这个effect只在组件挂载和卸载时运行
+  const [selectedIndex, setSelectedIndex] = useState(1);
+  return (
+    <Text
+      style={{
+        flex: 1,
+        marginTop: 80,
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}>
+      {selectedIndex}
+    </Text>
+  );
+}
+export default App;
+
+
+
 https://gitee.com/react-native-oh-library/usage-docs/blob/master/zh-cn/react-native-clippathview.md#%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8
 
 import { View, Text, Image, ScrollView, Animated, Dimensions, PixelRatio, Button, StyleSheet, Easing } from 'react-native'
