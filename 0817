@@ -1,57 +1,220 @@
-exportPATH=$PATH:/Users/xxx/Library/Huawei/Sdk/hmscore/4.0.0/t
-oolchains # 按照实际 SDK 安装路径配置
-HDC_SERVER_PORT=7035 
-launchctl setenv HDC_SERVER_PORT $HDC_SERVER_PORT 
-export HDC_SERVER_PORT
-https://reactnative.dev/docs/layout-props#zindex
+https://gitee.com/react-native-oh-library/usage-docs/blob/master/zh-cn/react-native-clippathview.md#%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8
 
-import React from "react";
-import { StyleSheet, View } from "react-native";
+import { View, Text, Image, ScrollView, Animated, Dimensions, PixelRatio, Button, StyleSheet, Easing } from 'react-native'
+import React, { useRef, useState, useEffect, forwardRef, useMemo, useCallback } from 'react'
+import { ClipPathView } from 'react-native-clippathview'
+import { banner01 } from './imageData'
 
-export default function App() {
-  return (
-    <View style={styles.root}>
-    <View
-      style={[
-        styles.container,
-        {
-          backgroundColor: '#e1e4e8',
-        },
-      ]}>
-      <View style={[styles.item, { backgroundColor: '#6638f0' }]} />
-      <View style={[styles.item, { backgroundColor: '#5cc9f5', marginTop: -16, zIndex: 1 }]} />
-      <View style={[styles.item, { backgroundColor: '#4af2a1', marginTop: -16 }]} />
-    </View>
-  </View>
-  );
-}
+const windowDimensions = Dimensions.get('window');
+const screenDimensions = Dimensions.get('screen');
 
-const styles = StyleSheet.create({
-  root: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  container: {
-    height: 200,
-    width: 200,
-    borderRadius: 16,
-    padding: 16,
-    borderWidth: 8,
-    borderColor: 'rgba(0,0,0,0.2)',
-  },
-  item: {
-    borderWidth: 4,
-    borderColor: 'rgba(0,0,0,0.2)',
-    height: 48,
-    width: 48,
-    borderRadius: 8,
-  },
+const windowWidth = windowDimensions.width;
+const windowHeight = windowDimensions.height;
+
+const widthPx = PixelRatio.getPixelSizeForLayoutSize(windowWidth);
+const heightPx = PixelRatio.getPixelSizeForLayoutSize(windowHeight);
+
+const CustomView = React.forwardRef((props, ref) => {
+// some additional logic
+console.log(props.style)
+return (
+<ClipPathView ref={ref} {...props} fill="#f00">
+{/* <Text style={{ color: '#ff0' }}>custom view</Text>
+<Text style={{ color: '#ff0' }}>{props.d}</Text> */}
+{props.children}
+</ClipPathView>
+)
 });
 
+// const AnimatedClipPath = Animated.createAnimatedComponent(CustomView);
+const AnimatedClipPath = Animated.createAnimatedComponent(ClipPathView);
 
-https://docs.expo.dev/ui-programming/z-index/#changing-the-zindex-of-an-element
+export default function index() {
+const [moveY, setMoveY] = useState(0);
+const offset = useRef(new Animated.Value(0)).current;
+const headerViewHeight = 200;
+const pathHeight = PixelRatio.getPixelSizeForLayoutSize(headerViewHeight);
+const screenWidth = widthPx - PixelRatio.getPixelSizeForLayoutSize(32);
+const ScreenConstant = {
+height: 900,
+};
+
+const generatePath = (arcDepth: number) => {
+return `M 0 0 L 0 ${pathHeight + arcDepth} Q ${screenWidth / 2} ${pathHeight - arcDepth - 1} ${screenWidth} ${pathHeight + arcDepth} L ${screenWidth} 0 L 0 0 Z`;
+};
+
+const finalD = useMemo(() => {
+const d = offset?.interpolate({
+inputRange: [-headerViewHeight, -26, 0],
+outputRange: [generatePath(-26), generatePath(-26), generatePath(0)],
+});
+return d.__getValue();
+}, [moveY])
+
+const transY = useMemo(() => {
+let y = offset.interpolate({
+inputRange: [
+-ScreenConstant.height,
+-headerViewHeight,
+0,
+ScreenConstant.height,
+],
+outputRange: [
+headerViewHeight - ScreenConstant.height,
+0,
+0,
+0,
+],
+});
+return y.__getValue();
+}, [moveY])
+
+const scrollHandle = (ev) => {
+// console.log('FG scroll ', JSON.stringify(ev))
+const contentHeight = ev.nativeEvent.contentSize.height;
+const offsetY = Math.ceil(ev.nativeEvent.contentOffset.y);
+console.log("FG scroll", contentHeight, offsetY)
+
+if (offsetY <= 0) {
+// setMoveY(offsetY);
+// console.log(typeof offsetY)
+offset.setValue(offsetY);
+}
+};
+
+const onScrollBeginDrag = (ev) => { };
+
+const onScrollEndDrag = (ev) => { };
+
+return (
+<ScrollView style={{ width: '100%', height: '100%', backgroundColor: 'rgba(0, 255, 0, 0.1)' }}
+onScroll={scrollHandle}
+onScrollBeginDrag={onScrollBeginDrag}
+onScrollEndDrag={onScrollEndDrag}
+>
+<AnimatedClipPath
+style={{
+zIndex: 1,
+backgroundColor: '#201E1E',
+// width: 375,
+// height: 1000,
+width: windowWidth - 32,
+height: headerViewHeight,
+// position: 'absolute',
+flexDirection: 'column-reverse',
+transform: [
+{
+translateY:
+offset.interpolate({
+inputRange: [
+// -100000,
+-ScreenConstant.height,
+-headerViewHeight,
+0,
+// 100000
+ScreenConstant.height,
+],
+outputRange: [
+headerViewHeight - ScreenConstant.height,
+0,
+0,
+0,
+],
+}) ?? 0,
+},
+],
+}}
+d={offset?.interpolate({
+inputRange: [-headerViewHeight, -26, 0],
+outputRange: [generatePath(-26), generatePath(-26), generatePath(0)],
+})}
+>
+<Image
+style={{ width: '100%', height: '100%' }}
+source={{
+uri: banner01,
+}}
+/>
+</AnimatedClipPath>
+
+<Text></Text>
+<View style={{ padding: 20, backgroundColor: "rgba(0,0,255, 0.2)" }}>
+<Text>windowDimensions: {JSON.stringify(windowDimensions)}</Text>
+<Text>screenDimensions: {JSON.stringify(screenDimensions)}</Text>
+<Text>widthPx: {widthPx}</Text>
+<Text>heightPx: {heightPx}</Text>
+<Text>32: {PixelRatio.getPixelSizeForLayoutSize(32)}</Text>
+<Text>headerViewHeight: {headerViewHeight}</Text>
+<Text>ScreenConstant height: {ScreenConstant.height}</Text>
+<Text>transY：{transY}</Text>
+<Text>moveY: {moveY}</Text>
+<Text></Text>
+<Text></Text>
+<Text>{finalD}</Text>
+{/* <Text>{finalPath}</Text> */}
+
+</View>
+
+</ScrollView>
+)
+}
+
+// <AnimatedClipPathView
+// style={{
+// zIndex: 1,
+// backgroundColor: "#201E1E",
+// width: 375,
+// height: 60,
+// position: "absolute",
+// flexDirection: "column-reverse",
+// transform: [
+// {
+// translateY:
+// this.props.offset?.interpolate({
+// inputRange: [
+// -ScreenConstant.height,
+// -headerViewHeight,
+// 0,
+// ScreenConstant.height
+// ],
+// outputRange: [
+// headerViewHeight - ScreenConstant.height,
+// 0,
+// 0,
+// 0
+// ]
+// }) ?? 0
+// }
+// ]
+// }}
+// d={offset?.interpolate({
+// inputRange: [-headerViewHeight, -26, 0],
+// outputRange: [generatePath(-26), generatePath(-26), generatePath(0)]
+// })}
+// >
+
+const styles = StyleSheet.create({
+cpvContainer: {
+width: '100%',
+height: '100%',
+},
+container: {
+flex: 1,
+// alignItems: 'center',
+// justifyContent: 'center',
+},
+transformOriginWrapper: {
+borderWidth: 1,
+borderColor: 'rgba(0, 0, 0, 0.5)',
+},
+transformOriginView: {
+backgroundColor: 'pink',
+width: 100,
+height: 100,
+// transformOrigin: 'center',
+transformOrigin: 'left top',
+},
+});
 git submodule update --init --recursive
 
 testerino：npm pack，
