@@ -1,6 +1,8 @@
   "overrides": {
     "@rnoh/react-native-openharmony": "file:./libs/react_native_openharmony-5.0.0.490.har"
   }
+
+https://gitee.com/react-native-oh-library/usage-docs/blob/master/zh-cn/react-native-clippath-capi.md
 import React, {useEffect, useState} from 'react';
 import {Text} from 'react-native';
 
