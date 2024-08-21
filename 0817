@@ -1,4 +1,6 @@
-  "overrides": {
+https://github.com/react-native-oh-library/react-native-clippath/blob/sig/example/ShunFengExample.tsx
+
+"overrides": {
     "@rnoh/react-native-openharmony": "file:./libs/react_native_openharmony-5.0.0.490.har"
   }
 
