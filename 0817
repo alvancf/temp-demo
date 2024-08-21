@@ -1,4 +1,57 @@
+HarmonyOS & React Native Integration Demo
+This repository contains a demonstration of how to work with files in a sandbox environment on both HarmonyOS and React Native platforms.
 
+Overview
+HarmonyOS Side: Demonstrates how to push a raw file into the sandbox and successfully load it.
+React Native Side: Shows how to load an image from the sandbox and display it in the app.
+Features
+HarmonyOS
+Push Raw File to Sandbox: The demo demonstrates how to move a file from the rawfile directory into the app's sandbox.
+Load File from Sandbox: The demo loads the file from the sandbox to ensure it has been successfully pushed and is accessible.
+React Native
+Load Image from Sandbox: The demo retrieves an image from the sandbox and displays it using an Image component.
+Requirements
+HarmonyOS: A development environment set up with the necessary tools for HarmonyOS development.
+React Native: A development environment set up with React Native 0.72.x.
+Getting Started
+HarmonyOS
+Setup the Project:
+
+Clone the repository and open the HarmonyOS project in DevEco Studio.
+Ensure that you have set up your environment with the appropriate SDKs and emulators/devices.
+Push Raw File to Sandbox:
+
+Locate the rawfile in your project.
+The demo code will automatically move this file into the app’s sandbox when the app starts.
+Load and Display File:
+
+The file will be loaded from the sandbox and its content will be processed as needed.
+React Native
+Setup the Project:
+
+Navigate to the ReactNative folder.
+Run npm install to install the necessary dependencies.
+Ensure your environment is set up for React Native development.
+Load Image from Sandbox:
+
+The React Native app will attempt to load an image file from the sandbox.
+The image will be displayed in the app's interface.
+Running the Demos
+HarmonyOS
+Build and run the HarmonyOS app on a simulator or device.
+Observe the process of pushing the file into the sandbox and loading it.
+React Native
+Run the React Native app on an emulator or device using npx react-native run-android or npx react-native run-ios.
+The image from the sandbox should be loaded and displayed.
+File Structure
+harmonyos/: Contains the HarmonyOS project.
+react-native/: Contains the React Native project.
+assets/: Contains the raw files and images used in the demos.
+License
+This project is licensed under the MIT License. See the LICENSE file for details.
+
+Acknowledgements
+This demo was inspired by the need to seamlessly integrate file handling between HarmonyOS and React Native platforms.
 import http from '@ohos.net.http';
 import { FormData } from "@ohos/axios"
 
