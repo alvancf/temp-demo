@@ -1,5 +1,6 @@
 https://github.com/react-native-oh-library/react-native-clippath/blob/sig/example/ShunFengExample.tsx
 https://github.com/react-native-openharmony/rnoh/pull/789
+https://wiki.huawei.com/domains/68350/wiki/105133/WIKI202405103501261
 
 "overrides": {
     "@rnoh/react-native-openharmony": "file:./libs/react_native_openharmony-5.0.0.490.har"
