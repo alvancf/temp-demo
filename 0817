@@ -1,3 +1,50 @@
+
+抱歉给您带来困扰，我来为您翻译成中文：
+
+---
+
+### README
+
+这个项目包含两个演示，一个演示如何在HarmonyOS侧将raw文件推送到沙箱并成功加载，另一个演示如何在React Native侧加载沙箱中的图片。
+
+#### 目录结构
+
+```
+├── harmony_demo
+│   ├── PushRawFileToSandbox.java  # HarmonyOS 侧推送 raw 文件到沙箱中
+│   └── LoadSandboxFile.java       # HarmonyOS 侧加载沙箱中的文件
+└── rn_demo
+    ├── App.js                     # React Native 侧加载沙箱中的图片
+    └── assets                     # 图片资源文件
+```
+
+#### HarmonyOS 侧
+
+1. **将文件推送到沙箱**: 使用 `PushRawFileToSandbox` 类将原始文件推送到沙箱，以便之后的读取操作。
+2. **加载文件**: 使用 `LoadSandboxFile` 类从沙箱中加载文件并验证其内容。
+
+#### React Native 侧
+
+1. **加载沙箱中的图片**: 使用 `App.js` 中的代码，从 HarmonyOS 沙箱中加载图片，并在 React Native 应用中显示。
+
+#### 运行步骤
+
+1. 在 HarmonyOS 上运行 `PushRawFileToSandbox`，确保原始文件被推送到沙箱中。
+2. 运行 `LoadSandboxFile` 来确认文件已正确加载。
+3. 启动 React Native 应用，运行 `App.js`，验证图片能否成功加载并显示。
+
+#### 注意事项
+
+- 确保 HarmonyOS 和 React Native 项目配置正确，以便文件可以在两个系统之间无缝传递与加载。
+- 沙箱路径的使用和文件访问权限需要根据具体环境进行调整。
+
+--- 
+
+这就是原文的中文翻译。
+
+
+
+
 https://github.com/react-native-openharmony/rnoh/pull/796/commits
 
 HarmonyOS & React Native Integration Demo
