@@ -1,3 +1,14 @@
+git submodule update --init --recursive
+
+testerino：npm pack，
+react-native-harmony-cli：npm i + npm pack，
+
+react-native-harmony：npm i + npm pack， 
+
+react-native-harmony-sample-package：npm i + npm pack，
+
+最后tester：npm run i + npm run dev
+
 export function VirtualizedList_initialNumToRender(): React.Node {
   const ref = React.useRef<any>(null);
   const window = useWindowDimensions();
