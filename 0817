@@ -1,711 +1,103 @@
+import React, { useRef, useEffect, useState } from 'react';
+import { Animated, View, Button } from 'react-native';
+import Svg, { Rect, Mask, Defs } from 'react-native-svg';
 
-抱歉给您带来困扰，我来为您翻译成中文：
+const AnimatedRect = Animated.createAnimatedComponent(Rect);
 
----
+type AppProps = {};
+const App = (props : AppProps) => {
+const sizeAnim = useRef(new Animated.Value(0)).current;
 
-### README
-
-这个项目包含两个演示，一个演示如何在HarmonyOS侧将raw文件推送到沙箱并成功加载，另一个演示如何在React Native侧加载沙箱中的图片。
-
-#### 目录结构
-
-```
-├── harmony_demo
-│   ├── PushRawFileToSandbox.java  # HarmonyOS 侧推送 raw 文件到沙箱中
-│   └── LoadSandboxFile.java       # HarmonyOS 侧加载沙箱中的文件
-└── rn_demo
-    ├── App.js                     # React Native 侧加载沙箱中的图片
-    └── assets                     # 图片资源文件
-```
-
-#### HarmonyOS 侧
-
-1. **将文件推送到沙箱**: 使用 `PushRawFileToSandbox` 类将原始文件推送到沙箱，以便之后的读取操作。
-2. **加载文件**: 使用 `LoadSandboxFile` 类从沙箱中加载文件并验证其内容。
-
-#### React Native 侧
-
-1. **加载沙箱中的图片**: 使用 `App.js` 中的代码，从 HarmonyOS 沙箱中加载图片，并在 React Native 应用中显示。
-
-#### 运行步骤
-
-1. 在 HarmonyOS 上运行 `PushRawFileToSandbox`，确保原始文件被推送到沙箱中。
-2. 运行 `LoadSandboxFile` 来确认文件已正确加载。
-3. 启动 React Native 应用，运行 `App.js`，验证图片能否成功加载并显示。
-
-#### 注意事项
-
-- 确保 HarmonyOS 和 React Native 项目配置正确，以便文件可以在两个系统之间无缝传递与加载。
-- 沙箱路径的使用和文件访问权限需要根据具体环境进行调整。
-
---- 
-
-这就是原文的中文翻译。
-
-
-
-
-https://github.com/react-native-openharmony/rnoh/pull/796/commits
-
-HarmonyOS & React Native Integration Demo
-This repository contains a demonstration of how to work with files in a sandbox environment on both HarmonyOS and React Native platforms.
-
-Overview
-HarmonyOS Side: Demonstrates how to push a raw file into the sandbox and successfully load it.
-React Native Side: Shows how to load an image from the sandbox and display it in the app.
-Features
-HarmonyOS
-Push Raw File to Sandbox: The demo demonstrates how to move a file from the rawfile directory into the app's sandbox.
-Load File from Sandbox: The demo loads the file from the sandbox to ensure it has been successfully pushed and is accessible.
-React Native
-Load Image from Sandbox: The demo retrieves an image from the sandbox and displays it using an Image component.
-Requirements
-HarmonyOS: A development environment set up with the necessary tools for HarmonyOS development.
-React Native: A development environment set up with React Native 0.72.x.
-Getting Started
-HarmonyOS
-Setup the Project:
-
-Clone the repository and open the HarmonyOS project in DevEco Studio.
-Ensure that you have set up your environment with the appropriate SDKs and emulators/devices.
-Push Raw File to Sandbox:
-
-Locate the rawfile in your project.
-The demo code will automatically move this file into the app’s sandbox when the app starts.
-Load and Display File:
-
-The file will be loaded from the sandbox and its content will be processed as needed.
-React Native
-Setup the Project:
-
-Navigate to the ReactNative folder.
-Run npm install to install the necessary dependencies.
-Ensure your environment is set up for React Native development.
-Load Image from Sandbox:
-
-The React Native app will attempt to load an image file from the sandbox.
-The image will be displayed in the app's interface.
-Running the Demos
-HarmonyOS
-Build and run the HarmonyOS app on a simulator or device.
-Observe the process of pushing the file into the sandbox and loading it.
-React Native
-Run the React Native app on an emulator or device using npx react-native run-android or npx react-native run-ios.
-The image from the sandbox should be loaded and displayed.
-File Structure
-harmonyos/: Contains the HarmonyOS project.
-react-native/: Contains the React Native project.
-assets/: Contains the raw files and images used in the demos.
-License
-This project is licensed under the MIT License. See the LICENSE file for details.
-
-Acknowledgements
-This demo was inspired by the need to seamlessly integrate file handling between HarmonyOS and React Native platforms.
-import http from '@ohos.net.http';
-import { FormData } from "@ohos/axios"
-
-class Header {
-  public contentType: string;
-
-  constructor(contentType: string) {
-    this.contentType = contentType;
-  }
-}
-interface fileI  {
-  uri: string,
-  type: string,
-  name: string
-}
-
-let formData = new FormData();
-let file:fileI = {
-  uri: '/data/storage/el2/base/haps/entry/cache/ReactNative_cropped_image_1718181899621.jpg',
-  type: 'image/jpeg', //type: 'multipart/form-data',
-  name: 'IMG',
+const startAnimation = () => {
+sizeAnim.setValue(0);
+Animated.timing(sizeAnim, {
+toValue: 50,
+duration: 3000,
+useNativeDriver: false,
+isInteraction: false,
+}).start();
 };
 
-formData.append('files', file);
+useEffect(() => {
+startAnimation();
+}, []);
 
+const [next, setNext] = useState(0);
+const [lastLeft, setLastLeft] = useState(6);
+const [lastTop, setLastTop] = useState(94.07691955566406);
+const [lastWidth, setLastWidth] = useState(376);
+const [lastHeight, setLastHeight] = useState(80.30770874023438);
+const [left, setLeft] = useState(6);
+const [top, setTop] = useState(94);
+const [width, setWidth] = useState(376);
+const [height, setHeight] = useState(80);
 
-@Entry
-@Component
-struct Index {
-  @State message: string = 'Hello World';
-
-  aboutToAppear() {
-    let httpRequest = http.createHttp();
-    let options: http.HttpRequestOptions = {
-      method: http.RequestMethod.POST, // 可选，默认为http.RequestMethod.GET
-      // 当使用POST请求时此字段用于传递请求体内容，具体格式与服务端协商确定
-      // extraData: null,
-      // expectDataType: http.HttpDataType.STRING, // 可选，指定返回数据的类型
-      // usingCache: true, // 可选，默认为true
-      // priority: 1, // 可选，默认为1
-      // 开发者根据自身业务需要添加header字段
-      // header: new Header('multipart/form-data'),
-      // header: {
-      //   // "ContentType":"multipart/form-data",
-      //   // "content-type":"multipart/form-data",
-      //   "contentType":"multipart/form-data",
-      // },
-      header: {
-        "content-type":"multipart/form-data",
-        "Content-Type":"multipart/form-data"
-      },
-      // readTimeout: 60000, // 可选，默认为60000ms
-      // connectTimeout: 60000, // 可选，默认为60000ms
-      // usingProtocol: http.HttpProtocol.HTTP1_1, // 可选，协议类型默认值由系统自动指定
-      // usingProxy: false, //可选，默认不使用网络代理，自API 10开始支持该属性
-      multiFormDataList: [ // 可选，仅当Header中，'content-Type'为'multipart/form-data'时生效，自API 11开始支持该属性
-        {
-          name: "files", // 数据名，自API 11开始支持该属性
-          contentType: 'image/jpeg', // 数据类型，自API 11开始支持该属性
-          filePath: '/data/storage/el2/base/haps/entry/cache/ReactNative_cropped_image_1718181899621.jpg',
-          remoteFileName:"IMG",
-        }
-      ]
-      // multiFormDataList: [
-      //   {
-      //     name: "files",
-      //     contentType: 'text/plain',
-      //     data: {
-      //       uri: '/data/storage/el2/base/haps/entry/cache/ReactNative_cropped_image_1718181899621.jpg',
-      //       type: 'image/jpeg',
-      //       name: 'img'
-      //     }
-      //   }
-      // ]
-    };
-    // https://graph.baidu.com/upload  https://www.baidu.com
-    httpRequest.requestInStream("https://graph.baidu.com/upload", options, (err, data) => {
-      console.info('Result:' + '123');
-      if (err) {
-        console.info('Result:-err' + JSON.stringify(err));
-      } else {
-        console.info('Result:-data' + data);
-      }
-    });
-  }
-  build() {
-    Stack({ alignContent: Alignment.Bottom }) {
-      Text('First child, show in bottom').width('90%').height('100%').backgroundColor(0xd2cab3).align(Alignment.Top)
-      Text('Second child, show in top').width('70%').height('60%').backgroundColor(0xc1cbac).align(Alignment.Top)
-    }.width('100%').height(150).margin({ top: 5 }).position({x: 20, y: 30})
-  }
+useEffect(() => {
+if (next === 1) {
+setTop(166);
+setHeight(308);
 }
-
-
-
-
-https://github.com/react-native-oh-library/react-native-clippath/blob/sig/example/ShunFengExample.tsx
-https://github.com/react-native-openharmony/rnoh/pull/789
-https://wiki.huawei.com/domains/68350/wiki/105133/WIKI202405103501261
-
-"overrides": {
-    "@rnoh/react-native-openharmony": "file:./libs/react_native_openharmony-5.0.0.490.har"
-  }
-
-https://gitee.com/react-native-oh-library/usage-docs/blob/master/zh-cn/react-native-clippath-capi.md
-import React, {useEffect, useState} from 'react';
-import {Text} from 'react-native';
-
-function App(): JSX.Element {
-  useEffect(() => {
-    // 组件挂载后执行的代码
-    console.log('Component mounted!');
-    let formData = new FormData();
-    let file = {
-      uri: '/data/storage/el2/base/haps/entry/cache/ReactNative_cropped_image_1718181899621.jpg',
-      type: 'image/jpeg', //type: 'multipart/form-data',
-      name: 'IMG',
-    };
-    formData.append('files', file);
-    // formData = {
-    //   cc: 222,
-    // };
-    // formData.append('files', JSON.stringify(file));
-    fetch('https://www.baidu.com', {
-      method: 'post',
-      headers: {
-        'content-Type': 'multipart/form-data',
-      },
-      // headers: {
-      //   'content-Type': 'application/json',
-      // },
-      body: formData,
-    }).then(req => {
-      console.log('req:', req);
-      setSelectedIndex(2);
-      req.json();
-    });
-
-    // 返回一个清理函数，组件卸载时执行
-    return () => {
-      console.log('Component unmounted!');
-      // 在这里清除定时器、取消网络请求或移除订阅等
-    };
-  }, []); // 空数组表示这个effect只在组件挂载和卸载时运行
-  const [selectedIndex, setSelectedIndex] = useState(1);
-  return (
-    <Text
-      style={{
-        flex: 1,
-        marginTop: 80,
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}>
-      {selectedIndex}
-    </Text>
-  );
+if (next === 2) {
+setTop(479);
+setHeight(48);
 }
-export default App;
+startAnimation(); // 每次 next 变化时重新启动动画
+}, [next]);
 
-
-
-https://gitee.com/react-native-oh-library/usage-docs/blob/master/zh-cn/react-native-clippathview.md#%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8
-
-import { View, Text, Image, ScrollView, Animated, Dimensions, PixelRatio, Button, StyleSheet, Easing } from 'react-native'
-import React, { useRef, useState, useEffect, forwardRef, useMemo, useCallback } from 'react'
-import { ClipPathView } from 'react-native-clippathview'
-import { banner01 } from './imageData'
-
-const windowDimensions = Dimensions.get('window');
-const screenDimensions = Dimensions.get('screen');
-
-const windowWidth = windowDimensions.width;
-const windowHeight = windowDimensions.height;
-
-const widthPx = PixelRatio.getPixelSizeForLayoutSize(windowWidth);
-const heightPx = PixelRatio.getPixelSizeForLayoutSize(windowHeight);
-
-const CustomView = React.forwardRef((props, ref) => {
-// some additional logic
-console.log(props.style)
-return (
-<ClipPathView ref={ref} {...props} fill="#f00">
-{/* <Text style={{ color: '#ff0' }}>custom view</Text>
-<Text style={{ color: '#ff0' }}>{props.d}</Text> */}
-{props.children}
-</ClipPathView>
-)
-});
-
-// const AnimatedClipPath = Animated.createAnimatedComponent(CustomView);
-const AnimatedClipPath = Animated.createAnimatedComponent(ClipPathView);
-
-export default function index() {
-const [moveY, setMoveY] = useState(0);
-const offset = useRef(new Animated.Value(0)).current;
-const headerViewHeight = 200;
-const pathHeight = PixelRatio.getPixelSizeForLayoutSize(headerViewHeight);
-const screenWidth = widthPx - PixelRatio.getPixelSizeForLayoutSize(32);
-const ScreenConstant = {
-height: 900,
+const handlePress = () => {
+setNext((n) => n + 1);
 };
 
-const generatePath = (arcDepth: number) => {
-return `M 0 0 L 0 ${pathHeight + arcDepth} Q ${screenWidth / 2} ${pathHeight - arcDepth - 1} ${screenWidth} ${pathHeight + arcDepth} L ${screenWidth} 0 L 0 0 Z`;
-};
-
-const finalD = useMemo(() => {
-const d = offset?.interpolate({
-inputRange: [-headerViewHeight, -26, 0],
-outputRange: [generatePath(-26), generatePath(-26), generatePath(0)],
-});
-return d.__getValue();
-}, [moveY])
-
-const transY = useMemo(() => {
-let y = offset.interpolate({
-inputRange: [
--ScreenConstant.height,
--headerViewHeight,
-0,
-ScreenConstant.height,
-],
-outputRange: [
-headerViewHeight - ScreenConstant.height,
-0,
-0,
-0,
-],
-});
-return y.__getValue();
-}, [moveY])
-
-const scrollHandle = (ev) => {
-// console.log('FG scroll ', JSON.stringify(ev))
-const contentHeight = ev.nativeEvent.contentSize.height;
-const offsetY = Math.ceil(ev.nativeEvent.contentOffset.y);
-console.log("FG scroll", contentHeight, offsetY)
-
-if (offsetY <= 0) {
-// setMoveY(offsetY);
-// console.log(typeof offsetY)
-offset.setValue(offsetY);
-}
-};
-
-const onScrollBeginDrag = (ev) => { };
-
-const onScrollEndDrag = (ev) => { };
+console.log("lastLeft: ", lastLeft, "Math.floor(left): ", Math.floor(left));
+console.log("lastTop: ", lastTop, "Math.floor(top): ", Math.floor(top));
+console.log("lastWidth: ", lastWidth, "Math.floor(width): ", Math.floor(width));
+console.log("lastHeight: ", lastHeight, "Math.floor(height): ", Math.floor(height));
 
 return (
-<ScrollView style={{ width: '100%', height: '100%', backgroundColor: 'rgba(0, 255, 0, 0.1)' }}
-onScroll={scrollHandle}
-onScrollBeginDrag={onScrollBeginDrag}
-onScrollEndDrag={onScrollEndDrag}
->
-<AnimatedClipPath
-style={{
-zIndex: 1,
-backgroundColor: '#201E1E',
-// width: 375,
-// height: 1000,
-width: windowWidth - 32,
-height: headerViewHeight,
-// position: 'absolute',
-flexDirection: 'column-reverse',
-transform: [
-{
-translateY:
-offset.interpolate({
-inputRange: [
-// -100000,
--ScreenConstant.height,
--headerViewHeight,
-0,
-// 100000
-ScreenConstant.height,
-],
-outputRange: [
-headerViewHeight - ScreenConstant.height,
-0,
-0,
-0,
-],
-}) ?? 0,
-},
-],
-}}
-d={offset?.interpolate({
-inputRange: [-headerViewHeight, -26, 0],
-outputRange: [generatePath(-26), generatePath(-26), generatePath(0)],
+<View style={{ position: "relative", height: "100%", width: "100%", backgroundColor: "yellow" }}>
+<Svg height="80%" width="100%">
+<Defs>
+<Mask id="mask" x="0" y="0" height="100%" width="100%" maskUnits="userSpaceOnUse">
+<Rect height="100%" width="100%" fill="#fff" />
+<AnimatedRect
+x={sizeAnim.interpolate({
+inputRange: [0, 50],
+outputRange: [lastLeft, Math.floor(left)],
 })}
->
-<Image
-style={{ width: '100%', height: '100%' }}
-source={{
-uri: banner01,
-}}
+y={sizeAnim.interpolate({
+inputRange: [0, 50],
+outputRange: [lastTop, Math.floor(top)],
+})}
+width={sizeAnim.interpolate({
+inputRange: [0, 50],
+outputRange: [lastWidth, Math.floor(width)],
+})}
+height={sizeAnim.interpolate({
+inputRange: [0, 50],
+outputRange: [lastHeight, Math.floor(height)],
+})}
+fill="black"
+rx="12"
+ry="12"
 />
-</AnimatedClipPath>
-
-<Text></Text>
-<View style={{ padding: 20, backgroundColor: "rgba(0,0,255, 0.2)" }}>
-<Text>windowDimensions: {JSON.stringify(windowDimensions)}</Text>
-<Text>screenDimensions: {JSON.stringify(screenDimensions)}</Text>
-<Text>widthPx: {widthPx}</Text>
-<Text>heightPx: {heightPx}</Text>
-<Text>32: {PixelRatio.getPixelSizeForLayoutSize(32)}</Text>
-<Text>headerViewHeight: {headerViewHeight}</Text>
-<Text>ScreenConstant height: {ScreenConstant.height}</Text>
-<Text>transY：{transY}</Text>
-<Text>moveY: {moveY}</Text>
-<Text></Text>
-<Text></Text>
-<Text>{finalD}</Text>
-{/* <Text>{finalPath}</Text> */}
-
-</View>
-
-</ScrollView>
-)
-}
-
-// <AnimatedClipPathView
+</Mask>
+</Defs>
+<Rect height="100%" width="100%" fill="rgba(0, 0, 0, 0.7)" mask="url(#mask)" />
+<Rect x={left} y={top} width={width} height={height} fill="transparent" />
+</Svg>
+<Button 
 // style={{
-// zIndex: 1,
-// backgroundColor: "#201E1E",
-// width: 375,
-// height: 60,
 // position: "absolute",
-// flexDirection: "column-reverse",
-// transform: [
-// {
-// translateY:
-// this.props.offset?.interpolate({
-// inputRange: [
-// -ScreenConstant.height,
-// -headerViewHeight,
-// 0,
-// ScreenConstant.height
-// ],
-// outputRange: [
-// headerViewHeight - ScreenConstant.height,
-// 0,
-// 0,
-// 0
-// ]
-// }) ?? 0
-// }
-// ]
+// zIndex: 9999,
+// top: 400,
+// left: 100,
+// width: 30,
+// height: 20,
+// backgroundColor: "red",
 // }}
-// d={offset?.interpolate({
-// inputRange: [-headerViewHeight, -26, 0],
-// outputRange: [generatePath(-26), generatePath(-26), generatePath(0)]
-// })}
-// >
-
-const styles = StyleSheet.create({
-cpvContainer: {
-width: '100%',
-height: '100%',
-},
-container: {
-flex: 1,
-// alignItems: 'center',
-// justifyContent: 'center',
-},
-transformOriginWrapper: {
-borderWidth: 1,
-borderColor: 'rgba(0, 0, 0, 0.5)',
-},
-transformOriginView: {
-backgroundColor: 'pink',
-width: 100,
-height: 100,
-// transformOrigin: 'center',
-transformOrigin: 'left top',
-},
-});
-git submodule update --init --recursive
-
-testerino：npm pack，
-react-native-harmony-cli：npm i + npm pack，
-
-react-native-harmony：npm i + npm pack， 
-
-react-native-harmony-sample-package：npm i + npm pack，
-
-最后tester：npm run i + npm run dev
-携程旅行
-小红书
-快手
-喜马拉雅
-爱奇艺
-滴滴出行
-中国工商银行
-知乎
-YY
-叮咚买菜
-网上国网
-和家亲
-瑞幸咖啡
-顺丰速运
-安居客
-平安好车主
-驾校一点通
-途虎养车
-汽车之家
-瓜子二手车
-智行火车票
-云闪付
-平安口袋银行
-东方财富
-浦发银行
-平安金管家
-萤石云视频
-网易云音乐
-今日水印相机
-深信服零信任
-https://gl.swmansion.com/rnoh/react-native-harmony/-/merge_requests/1500/diffs
-
-
-
-_handleContentOnLayout = (e: LayoutEvent) => {
-    const { width, height } = e.nativeEvent.layout;
-      /**
-       * RNOH patch - Fixed the issue where sticky headers are in disordered position after foldable phone is expanded/folded.
-       * When a foldable phone is expanded/folded, the height of the list items often changes,
-       * causing the content height of the ScrollView to change.
-       * But since the scroll event is not triggered, the position of the sticky headers is 
-       * still offset according to the original content height.
-       * So we should recalculate the contentOffset based on the new contentHeight and trigger 
-       * the scroll event to fix the position of sticky headers
-       */
-      let { contentOffset, contentHeight, layoutHeight } = this.state;
-      if (contentOffset && contentHeight) {
-        console.log('contentOffset:', contentOffset)
-        console.log('layoutHeight:', layoutHeight)
-        console.log('contentHeight:', contentHeight)
-        console.log('layoutHeight:', layoutHeight)
-        console.log('height:', height)
-        contentOffset *= (height - layoutHeight) / (contentHeight - layoutHeight);
-  
-        (contentOffset < 0) && (contentOffset = 0);
-        // 2042 1986
-        console.log('contentOffset:', contentOffset)
-        this.scrollTo({ y: contentOffset, animated: false });
-        this._scrollAnimatedValue.setValue(contentOffset);
-      }
-      this.setState({
-        contentOffset,
-        contentHeight: height
-      });
-      /**
-       * 本意是在折叠屏屏幕变化时，触发layout事件，根据当前滚动条的位置去重新计算滚动条应该加载的位置
-       * 但是在虚拟列表中，触发scrollTo的过程中，也会触发layout事件，使用Animate时scrollTo还没完全完成，导致拿到的滚动条位置是错的！
-       * 等scrollTo加载完成再去拿位置，动画加载的默认时间大概是250ms，设置这个时间为250ms
-      */
-      this.props.onContentSizeChange &&
-        this.props.onContentSizeChange(width, height);
-  };
-const debounce = (func, delay) => {
-  let timeout;
-  return function (...args) {
-    clearTimeout(timeout);
-    timeout = setTimeout(() => func.apply(this, args), delay);
-  };
+title={"点击我"} onPress={handlePress} />
+</View>
+);
 };
 
-const scrollToSpecificItem = debounce(() => {
-  flatListRef.current.scrollToItem({
-    item: DATA[49],
-    animated: true,
-    viewPosition: 0.5,
-  });
-}, 300); // 防抖处理，300ms 内只触发一次
-
-
-import React from 'react';
-import { SafeAreaView, View, VirtualizedList, StyleSheet, Text } from 'react-native';
-import Constants from 'expo-constants';
-    testContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        backgroundColor: '#f2f2f7ff',
-        height: 40,
-      },
- item: {
-      backgroundColor: '#f9c2ff',
-      height: 40,
-      justifyContent: 'center',
-      marginVertical: 8,
-      marginHorizontal: 16,
-    },
-    title: {
-      fontSize: 32,
-    },
-const GENERATED_DATA = Array.from({length: 100}, (_, index) => ({
-  id: Math.random().toString(12).substring(0),
-  title: `Item ${index + 1}`,
-}));
-    const Item = ({title}) => (
-      <View style={styles.item}>
-        <Text style={styles.title}>{title}</Text>
-      </View>
-    );
-      <View style={styles.viewStyle}>
-        <View testID="test_container" style={styles.testContainer}>
-            <Text style={{paddingTop:10,paddingLeft:10}}>实际效果:</Text>
-            <Button
-            title='Toggle1'
-            onPress={() => {ref.current.scrollToItem({item: GENERATED_DATA[2], animated: true});} }
-            ></Button>
-          <Button
-            title='Toggle2'
-            onPress={() => {
-              ref.current?.scrollToItem({
-                animated: true,
-                item: CCDATA[2],
-              });
-            }}
-          ></Button>
-        </View>
-                 <VirtualizedList
-              ref = {vRef}
-              initialNumToRender={10}
-              data={GENERATED_DATA}
-              renderItem={(item) => <Item title={item.title} />}
-              keyExtractor={item => item.id}
-              getItemCount={() => GENERATED_DATA.length}
-              getItem={(data, index) => GENERATED_DATA[index]}
-              />
-        {/* <VirtualizedList
-          data={DATA}
-          initialNumToRender={4}
-          renderItem={({ item }) => <Item title={item.title} />}
-          keyExtractor={item => item.key}
-          getItemCount={getItemCount}
-          getItem={getItem}
-        /> */}
-        {/* <FlatList
-          ref={ref}
-          renderItem={({ item }) => <Item title={item.title} />}
-          keyExtractor={item => item.id}
-          data={DATA}
-        /> */}
-      </View>
-
- viewStyle:{
-      width:300,
-      height:240,
-      marginBottom:30,
-      borderWidth:1,
-      borderColor:'black',
-      borderStyle:'solid',
-      marginLeft:40,
-    },
-
-
-const DATA = [];
-const getItem = (data, index) => {
-  return {
-    id: Math.random().toString(12).substring(0),
-    title: `Item ${index+1}`
-  }
-}
-const getItemCount = (data) => {
-  return 50;
-}
-const Item = ({ title })=> {
-  return (
-    <View style={styles.item}>
-      <Text style={styles.title}>{title}</Text>
-    </View>
-  );
-}
-const VirtualizedListExample = () => {
-  return (
-    <SafeAreaView style={styles.container}>
-      <VirtualizedList
-        data={DATA}
-        initialNumToRender={4}
-        renderItem={({ item }) => <Item title={item.title} />}
-        keyExtractor={item => item.key}
-        getItemCount={getItemCount}
-        getItem={getItem}
-      />
-    </SafeAreaView>
-  );
-}
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    marginTop: Constants.statusBarHeight,
-  },
-  item: {
-    backgroundColor: '#f9c2ff',
-    height: 150,
-    justifyContent: 'center',
-    marginVertical: 8,
-    marginHorizontal: 16,
-    padding: 20,
-  },
-  title: {
-    fontSize: 32,
-  },
-});
-export default VirtualizedListExample;
+export default App;
