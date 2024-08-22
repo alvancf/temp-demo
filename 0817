@@ -1,3 +1,35 @@
+携程旅行
+小红书
+快手
+喜马拉雅
+爱奇艺
+滴滴出行
+中国工商银行
+知乎
+YY
+叮咚买菜
+网上国网
+和家亲
+瑞幸咖啡
+顺丰速运
+安居客
+平安好车主
+驾校一点通
+途虎养车
+汽车之家
+瓜子二手车
+智行火车票
+云闪付
+平安口袋银行
+东方财富
+浦发银行
+平安金管家
+萤石云视频
+网易云音乐
+今日水印相机
+深信服零信任
+
+
 https://github.com/react-native-openharmony/rnoh/releases/tag/version-0.72.29
 
 import React, { useRef, useEffect, useState } from 'react';
