@@ -1,4 +1,108 @@
-   minifierConfig: {
+import * as React from 'react';
+import {
+  TouchableOpacity,
+  StyleSheet,
+  Text,
+  Button,
+  VirtualizedList,
+  View,
+  useWindowDimensions,
+  Image,
+  ScrollView, FlatList
+} from 'react-native';
+
+export default function VirtualizedList_initialNumToRender() {
+  const ref = React.useRef<any>(null);
+  const window = useWindowDimensions();
+  const getItemCount = (_data) => 12;
+  const getItem = (_data, index) => ({
+    id: Math.random().toString(12).substring(0),
+    title: `Item ${index + 1}`,
+  });
+  const Item = ({title}) => (
+    <View style={styles.item}>
+      <Text style={styles.title}>{title}</Text>
+    </View>
+  );
+  const _getItemLayout = (data,index)=>{
+    return {length:55,offset:55*index,index}
+  }
+
+  const DATA: ItemData[] = [
+    {
+      id: 'gd5jc6gnbb2sbrz9w8z2',
+      title: 'First Item',
+    },
+    {
+      id: 'jb95igwbswt13etu073o',
+      title: 'Second Item',
+    },
+    {
+      id: 'zcp3zsdkkjmc7cx66hjl',
+      title: 'Third Item',
+    },
+    {
+      id: 'fx72rfguehrydmd4n21l',
+      title: 'Fourth Item',
+    },
+    {
+      id: '8kadvdlhtr7m3yv3fp4v',
+      title: 'Fifth Item',
+    },
+  ];
+
+  return (
+    <View
+      style={{
+        height: 120,
+      }}>
+      <FlatList
+        style={{
+          height: 120,
+        }}
+        data={DATA}
+        nestedScrollEnabled
+        renderItem={({ item }) => {
+          return <Item title={item.title} />;
+        }}
+        keyExtractor={item => item.id}
+        initialNumToRender={2}
+        windowSize={1}
+      />
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  viewStyle:{
+    width:300,
+    height:200,
+    marginBottom:30,
+    borderWidth:1,
+    borderColor:'black',
+    borderStyle:'solid',
+    marginLeft:40,
+    
+    
+  },
+  item: {
+    backgroundColor: '#f9c2ff',
+    height: 40,
+    justifyContent: 'center',
+    marginVertical: 8,
+    marginHorizontal: 16,
+  },
+  title: {
+    fontSize: 32,
+  },
+  textStyle:{
+    padding:20,
+    textAlign:'left',
+    lineHeight:30
+  },
+})
+
+minifierConfig: {
         compress: false, // 禁用压缩
         mangle: false,   // 禁用混淆
       },
