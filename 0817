@@ -1,3 +1,8 @@
+   minifierConfig: {
+        compress: false, // 禁用压缩
+        mangle: false,   // 禁用混淆
+      },
+
 git submodule update --init --recursive
 
 testerino：npm pack，
