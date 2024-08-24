@@ -20,6 +20,7 @@ struct ScrollExample {
               .textAlign(TextAlign.Center)
               .margin({ top: 10 })
           }, (item: string) => item)
+          TextInput()
         }.width('100%')
       }
       .scrollable(ScrollDirection.Vertical) // 滚动方向纵向
@@ -28,8 +29,8 @@ struct ScrollExample {
       .scrollBarWidth(10) // 滚动条宽度
       .friction(0.6)
       .edgeEffect(EdgeEffect.None)
-      .onWillScroll((xOffset: number, yOffset: number, scrollState: ScrollState) => {
-        console.info(xOffset + ' ' + yOffset)
+      .onScroll((xOffset: number, yOffset: number) => {
+        console.log('yOffset' , yOffset)
       })
       .onScrollEdge((side: Edge) => {
         console.info('To the edge')
@@ -72,9 +73,9 @@ struct ScrollExample {
         })
         .margin({ top: 210, left: 20 })
     }.width('100%').height('100%').backgroundColor(0xDCDCDC)
+    .expandSafeArea([SafeAreaType.KEYBOARD])
   }
 }
-
 
 import { Tester, TestSuite, TestCase } from '@rnoh/testerino';
 import React, { useEffect, useRef, useState } from 'react';
