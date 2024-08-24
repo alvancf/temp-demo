@@ -1,319 +1,63 @@
-import * as React from 'react';
-import {
-  TouchableOpacity,
-  StyleSheet,
-  Text,
-  Button,
-  VirtualizedList,
-  View,
-  useWindowDimensions,
-  Image,
-  ScrollView, FlatList
-} from 'react-native';
+import { Tester, TestSuite, TestCase } from '@rnoh/testerino';
+import React, { useEffect, useRef, useState } from 'react';
+import { View, TextInput, StyleSheet, Dimensions, Text, ScrollView } from 'react-native';
 
-export default function VirtualizedList_initialNumToRender() {
-  const ref = React.useRef<any>(null);
-  const window = useWindowDimensions();
-  const getItemCount = (_data) => 12;
-  const getItem = (_data, index) => ({
-    id: Math.random().toString(12).substring(0),
-    title: `Item ${index + 1}`,
-  });
-  const Item = ({title}) => (
-    <View style={styles.item}>
-      <Text style={styles.title}>{title}</Text>
-    </View>
-  );
-  const _getItemLayout = (data,index)=>{
-    return {length:55,offset:55*index,index}
-  }
 
-  const DATA: ItemData[] = [
-    {
-      id: 'gd5jc6gnbb2sbrz9w8z2',
-      title: 'First Item',
-    },
-    {
-      id: 'jb95igwbswt13etu073o',
-      title: 'Second Item',
-    },
-    {
-      id: 'zcp3zsdkkjmc7cx66hjl',
-      title: 'Third Item',
-    },
-    {
-      id: 'fx72rfguehrydmd4n21l',
-      title: 'Fourth Item',
-    },
-    {
-      id: '8kadvdlhtr7m3yv3fp4v',
-      title: 'Fifth Item',
-    },
-  ];
-
-  return (
-    <View
-      style={{
-        height: 120,
-      }}>
-      <FlatList
-        style={{
-          height: 120,
-        }}
-        data={DATA}
-        nestedScrollEnabled
-        renderItem={({ item }) => {
-          return <Item title={item.title} />;
-        }}
-        keyExtractor={item => item.id}
-        initialNumToRender={2}
-        windowSize={1}
-      />
-    </View>
-  );
+function BugMeasureDemo() {
+    
+    const viewRef = useRef<View | null>(null);
+    
+    const [pageH, setpageH] = useState(0);
+    
+    const [measurePageY, setmeasurePageY] = useState(0);
+    
+    useEffect(() => {
+        setpageH( Dimensions.get('window').height);
+        const tid = setInterval(getPageY, 1000);
+        return () => {
+            clearInterval(tid);
+        }
+    }, []);
+    
+    const getPageY = () => {
+        viewRef.current?.measure((x, y, width, height, pageX, pageY) => {
+            setmeasurePageY(pageY);
+        });
+    } 
+    
+    return (
+        <>
+            <ScrollView>
+            <Tester>
+                <TestSuite name='Measure Bug'>
+                    {
+                        Array.from({length: 12}).map((_, i) => 
+                        <TestCase key={i} itShould={`TextInput ${i}`}>
+                            <TextInput style={styles.inp} />
+                        </TestCase>
+                        )
+                    }
+                    <TestCase itShould={`点击输入框键盘弹起，计算的PageY发生错误`}>
+                        <Text>windowHeight: {pageH}</Text>
+                        <Text>PageY: {measurePageY}</Text>
+                        <View ref={viewRef}>
+                            <TextInput style={[styles.inp, {borderColor: '#000'}]} />
+                        </View>
+                    </TestCase>
+                </TestSuite>
+            </Tester>
+            </ScrollView>
+        </>
+    )
 }
 
 const styles = StyleSheet.create({
-  viewStyle:{
-    width:300,
-    height:200,
-    marginBottom:30,
-    borderWidth:1,
-    borderColor:'black',
-    borderStyle:'solid',
-    marginLeft:40,
-    
-    
-  },
-  item: {
-    backgroundColor: '#f9c2ff',
-    height: 40,
-    justifyContent: 'center',
-    marginVertical: 8,
-    marginHorizontal: 16,
-  },
-  title: {
-    fontSize: 32,
-  },
-  textStyle:{
-    padding:20,
-    textAlign:'left',
-    lineHeight:30
-  },
+    inp: {
+        height: 36,
+        borderWidth: 1,
+        borderColor: '#f0f0f0',
+        borderRadius: 6
+    }
 })
 
-minifierConfig: {
-        compress: false, // 禁用压缩
-        mangle: false,   // 禁用混淆
-      },
-
-git submodule update --init --recursive
-
-testerino：npm pack，
-react-native-harmony-cli：npm i + npm pack，
-
-react-native-harmony：npm i + npm pack， 
-
-react-native-harmony-sample-package：npm i + npm pack，
-
-最后tester：npm run i + npm run dev
-
-export function VirtualizedList_initialNumToRender(): React.Node {
-  const ref = React.useRef<any>(null);
-  const window = useWindowDimensions();
-  const getItemCount = (_data) => 12;
-  const getItem = (_data, index) => ({
-    id: Math.random().toString(12).substring(0),
-    title: `Item ${index + 1}`,
-  });
-  const Item = ({title}) => (
-    <View style={styles.item}>
-      <Text style={styles.title}>{title}</Text>
-    </View>
-  );
-  const _getItemLayout = (data,index)=>{
-    return {length:55,offset:55*index,index}
-  }
-
-  const DATA: ItemData[] = [
-    {
-      id: 'gd5jc6gnbb2sbrz9w8z2',
-      title: 'First Item',
-    },
-    {
-      id: 'jb95igwbswt13etu073o',
-      title: 'Second Item',
-    },
-    {
-      id: 'zcp3zsdkkjmc7cx66hjl',
-      title: 'Third Item',
-    },
-    {
-      id: 'fx72rfguehrydmd4n21l',
-      title: 'Fourth Item',
-    },
-    {
-      id: '8kadvdlhtr7m3yv3fp4v',
-      title: 'Fifth Item',
-    },
-  ];
-
-  return (
-    <View
-      style={{
-        height: 120,
-      }}>
-      <FlatList
-        style={{
-          height: 120,
-        }}
-        data={DATA}
-        nestedScrollEnabled
-        renderItem={({ item }) => {
-          return <Item title={item.title} />;
-        }}
-        keyExtractor={item => item.id}
-        initialNumToRender={2}
-        windowSize={1}
-      />
-    </View>
-  );
-}
-
-携程旅行
-小红书
-快手
-喜马拉雅
-爱奇艺
-滴滴出行
-中国工商银行
-知乎
-YY
-叮咚买菜
-网上国网
-和家亲
-瑞幸咖啡
-顺丰速运
-安居客
-平安好车主
-驾校一点通
-途虎养车
-汽车之家
-瓜子二手车
-智行火车票
-云闪付
-平安口袋银行
-东方财富
-浦发银行
-平安金管家
-萤石云视频
-网易云音乐
-今日水印相机
-深信服零信任
-
-
-https://github.com/react-native-openharmony/rnoh/releases/tag/version-0.72.29
-
-import React, { useRef, useEffect, useState } from 'react';
-import { Animated, View, Button } from 'react-native';
-import Svg, { Rect, Mask, Defs } from 'react-native-svg';
-
-const AnimatedRect = Animated.createAnimatedComponent(Rect);
-
-type AppProps = {};
-const App = (props : AppProps) => {
-const sizeAnim = useRef(new Animated.Value(0)).current;
-
-const startAnimation = () => {
-sizeAnim.setValue(0);
-Animated.timing(sizeAnim, {
-toValue: 50,
-duration: 3000,
-useNativeDriver: false,
-isInteraction: false,
-}).start();
-};
-
-useEffect(() => {
-startAnimation();
-}, []);
-
-const [next, setNext] = useState(0);
-const [lastLeft, setLastLeft] = useState(6);
-const [lastTop, setLastTop] = useState(94.07691955566406);
-const [lastWidth, setLastWidth] = useState(376);
-const [lastHeight, setLastHeight] = useState(80.30770874023438);
-const [left, setLeft] = useState(6);
-const [top, setTop] = useState(94);
-const [width, setWidth] = useState(376);
-const [height, setHeight] = useState(80);
-
-useEffect(() => {
-if (next === 1) {
-setTop(166);
-setHeight(308);
-}
-if (next === 2) {
-setTop(479);
-setHeight(48);
-}
-startAnimation(); // 每次 next 变化时重新启动动画
-}, [next]);
-
-const handlePress = () => {
-setNext((n) => n + 1);
-};
-
-console.log("lastLeft: ", lastLeft, "Math.floor(left): ", Math.floor(left));
-console.log("lastTop: ", lastTop, "Math.floor(top): ", Math.floor(top));
-console.log("lastWidth: ", lastWidth, "Math.floor(width): ", Math.floor(width));
-console.log("lastHeight: ", lastHeight, "Math.floor(height): ", Math.floor(height));
-
-return (
-<View style={{ position: "relative", height: "100%", width: "100%", backgroundColor: "yellow" }}>
-<Svg height="80%" width="100%">
-<Defs>
-<Mask id="mask" x="0" y="0" height="100%" width="100%" maskUnits="userSpaceOnUse">
-<Rect height="100%" width="100%" fill="#fff" />
-<AnimatedRect
-x={sizeAnim.interpolate({
-inputRange: [0, 50],
-outputRange: [lastLeft, Math.floor(left)],
-})}
-y={sizeAnim.interpolate({
-inputRange: [0, 50],
-outputRange: [lastTop, Math.floor(top)],
-})}
-width={sizeAnim.interpolate({
-inputRange: [0, 50],
-outputRange: [lastWidth, Math.floor(width)],
-})}
-height={sizeAnim.interpolate({
-inputRange: [0, 50],
-outputRange: [lastHeight, Math.floor(height)],
-})}
-fill="black"
-rx="12"
-ry="12"
-/>
-</Mask>
-</Defs>
-<Rect height="100%" width="100%" fill="rgba(0, 0, 0, 0.7)" mask="url(#mask)" />
-<Rect x={left} y={top} width={width} height={height} fill="transparent" />
-</Svg>
-<Button 
-// style={{
-// position: "absolute",
-// zIndex: 9999,
-// top: 400,
-// left: 100,
-// width: 30,
-// height: 20,
-// backgroundColor: "red",
-// }}
-title={"点击我"} onPress={handlePress} />
-</View>
-);
-};
-
-export default App;
+export default BugMeasureDemo
