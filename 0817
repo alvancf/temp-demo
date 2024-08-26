@@ -1,4 +1,8 @@
-import Curves from '@ohos.curves'
+伙伴反映网络存在问题，发送原因是release打包后网络请求会有问题。
+我们首先使用rn进行打bundle（使用react-native bundle-harmony --dev false，这个false有就是release，没有就是debug），然后ide有一个Build Mode 也有debug和release两个模式，进行打hap包，这个是前情概要。
+1、rn打debug，ide debug、release都正常
+2、rn打release，ide debug会报错(报错信息是 console.assert is not a function)，release会网络请求失败。
+
 
 @Entry
 @Component
