@@ -35,3 +35,45 @@ YY
 网易云音乐
 今日水印相机
 深信服零信任
+
+import React, { Component } from 'react';
+import {
+  StyleSheet,
+  KeyboardAvoidingView,
+  Platform,
+  TextInput,
+  View
+} from 'react-native';
+
+const App = ()=> {
+
+  return (
+    <View style={styles.container}>
+      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={{ width: '100%', height: "100%", justifyContent: "center" }}>
+        <TextInput
+          underlineColorAndroid={'#ffffff'}
+          placeholder="这里是一个简单的输入框"
+          style={styles.textInput} />
+      </KeyboardAvoidingView>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: 'yellow',
+    //justifyContent: 'center',
+    paddingHorizontal: 20,
+    paddingTop: 20,
+  },
+  textInput: {
+    borderRadius: 5,
+    borderWidth: 1,
+    height: 140,
+    paddingHorizontal: 10,
+  },
+});
+
+export default App;
