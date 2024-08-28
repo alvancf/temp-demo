@@ -5,6 +5,55 @@ https://gitee.com/openharmony/docs/blob/master/zh-cn/application-dev/reference/a
 https://developer.huawei.com/consumer/cn/doc/harmonyos-references-V5/ts-custom-component-lifecycle-V5#onbackpress  router路由的
 https://developer.huawei.com/consumer/cn/doc/harmonyos-references-V5/ts-basic-components-navdestination-V5#onbackpressed10  navigation路由的
 
+以下是根据你提供的情况编写的会议纪要范例。请根据实际需要进行调整和补充。
+
+---
+
+**会议纪要**
+
+**日期**：2024年8月26日  
+**时间**：上午10:00 - 10:30  
+**地点**：公司会议室/Zoom  
+**主持人**：李四  
+**记录人**：王五  
+**与会者**：李四、张三、王五、赵六
+
+---
+
+### **会议议程**：
+
+1. 讨论 `requestInStream` 接口在实际使用中的问题
+2. 决定是否需要按照官方文档的描述来支持该接口
+
+### **讨论内容**：
+
+1. **`requestInStream` 接口的现状**：
+   - 张三汇报了在使用 `requestInStream` 接口时遇到的问题，实际功能与官方文档描述不符。
+   - 赵六指出，开发团队在测试过程中确认了接口的当前实现确实不支持官方文档中的某些功能。
+
+2. **如何处理接口与文档的不一致**：
+   - 与会者讨论了是否应该更新文档以匹配当前接口的实现，或者更新接口以符合文档的描述。
+   - 李四建议，考虑到用户的体验和对文档的依赖性，优先考虑按照官方文档的描述来支持该接口。
+
+### **决策与结论**：
+
+- **结论**：需要更新 `requestInStream` 接口以符合官方文档的描述，确保实际使用和文档保持一致。
+- **行动**：由开发团队根据官方文档的描述进行接口的更新和测试，确保所有功能按预期工作。
+
+### **行动项**：
+
+- **张三**：负责详细分析官方文档，列出 `requestInStream` 接口需要支持的所有功能，**截止日期：2024年8月29日**。
+- **赵六**：负责协调开发团队进行接口的修改和测试，**截止日期：2024年9月5日**。
+
+### **下次会议**：
+
+- **时间**：2024年9月6日上午10:00  
+- **地点**：公司会议室/Zoom  
+
+---
+
+请根据实际会议内容和公司格式进一步完善和调整这个纪要。
+
 携程旅行
 小红书
 快手
