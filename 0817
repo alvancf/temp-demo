@@ -5,6 +5,24 @@ https://gitee.com/openharmony/docs/blob/master/zh-cn/application-dev/reference/a
 https://developer.huawei.com/consumer/cn/doc/harmonyos-references-V5/ts-custom-component-lifecycle-V5#onbackpress  router路由的
 https://developer.huawei.com/consumer/cn/doc/harmonyos-references-V5/ts-basic-components-navdestination-V5#onbackpressed10  navigation路由的
 
+
+ 序号ID号
+   1 240816161835090 
+ 2 240827141507126 
+ 3 240828211129027 
+ 4 240828210042115 
+ 5 240827152425096 
+ 6 240827160528113 
+ 7 240828193809117 
+ 8 240827155212055 
+ 9 240827160818109 
+ 10 240827152608027 
+ 11 240827151522053 
+ 12 240827155019037 
+ 13 240827160947022 
+ 14 240827094144126 
+ 15 240814142155045 
+ 16 240820153426081 
 import React, { Component } from 'react';
 import { View ,TextInput} from 'react-native';
 
