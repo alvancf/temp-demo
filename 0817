@@ -5,28 +5,44 @@ https://gitee.com/openharmony/docs/blob/master/zh-cn/application-dev/reference/a
 https://developer.huawei.com/consumer/cn/doc/harmonyos-references-V5/ts-custom-component-lifecycle-V5#onbackpress  router路由的
 https://developer.huawei.com/consumer/cn/doc/harmonyos-references-V5/ts-basic-components-navdestination-V5#onbackpressed10  navigation路由的
 
+import React, { useRef } from 'react';
+import { SafeAreaView, FlatList, Text, View, StyleSheet, Button } from 'react-native';
 
+const DATA = [
+  { id: '1', title: 'Item 1' },
+  { id: '2', title: 'Item 2' },
+  { id: '3', title: 'Item 3' },
+  { id: '4', title: 'Item 4' },
+  { id: '5', title: 'Item 5' },
+  { id: '6', title: 'Item 6' },
+  { id: '7', title: 'Item 7' },
+  { id: '8', title: 'Item 8' },
+  { id: '9', title: 'Item 9' },
+  { id: '10', title: 'Item 10' },
+];
 
-import React from 'react';
-import {SafeAreaView, StyleSheet} from 'react-native';
-import EditTable from './editTable'; // 假设 EditTable 是自定义组件
+const App = () => {
+  const flatListRef = useRef<FlatList>(null);
 
-// 导入 JSON 数据
-import newdata from './newdata.json';
-import titleData from './titleData.json';
+  // 滚动到特定的索引
+  const scrollToIndex = (index: number) => {
+    flatListRef.current?.scrollToIndex({ index, animated: true });
+  };
 
-const App: React.FC = () => {
+  const renderItem = ({ item }: { item: { title: string } }) => (
+    <View style={styles.item}>
+      <Text style={styles.title}>{item.title}</Text>
+    </View>
+  );
+
   return (
     <SafeAreaView style={styles.container}>
-      <EditTable
-        tableData={newdata} // 引入的主题内容数据
-        titleData={titleData} // 引入的标题数据
-        cellHeight={82} // 每个单元格的高度
-        titleHeight={44} // 标题行的高度
-        cellWidth={94} // 单元格的宽度
-        isZebraLine={true} // 是否开启斑马线
-        zebraLineColor={'#FBFBFB'} // 斑马线颜色
-        ContarinerStyle={{flex: 1}} // 组件的样式
+      <Button title="Scroll to Item 5" onPress={() => scrollToIndex(4)} />
+      <FlatList
+        ref={flatListRef}
+        data={DATA}
+        renderItem={renderItem}
+        keyExtractor={(item) => item.id}
       />
     </SafeAreaView>
   );
@@ -35,61 +51,19 @@ const App: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+  },
+  item: {
+    backgroundColor: '#f9c2ff',
+    padding: 20,
+    marginVertical: 8,
+    marginHorizontal: 16,
+  },
+  title: {
+    fontSize: 32,
   },
 });
 
 export default App;
-
-
-以下是根据你提供的情况编写的会议纪要范例。请根据实际需要进行调整和补充。
-
----
-
-**会议纪要**
-
-**日期**：2024年8月26日  
-**时间**：上午10:00 - 10:30  
-**地点**：公司会议室/Zoom  
-**主持人**：李四  
-**记录人**：王五  
-**与会者**：李四、张三、王五、赵六
-
----
-
-### **会议议程**：
-
-1. 讨论 `requestInStream` 接口在实际使用中的问题
-2. 决定是否需要按照官方文档的描述来支持该接口
-
-### **讨论内容**：
-
-1. **`requestInStream` 接口的现状**：
-   - 张三汇报了在使用 `requestInStream` 接口时遇到的问题，实际功能与官方文档描述不符。
-   - 赵六指出，开发团队在测试过程中确认了接口的当前实现确实不支持官方文档中的某些功能。
-
-2. **如何处理接口与文档的不一致**：
-   - 与会者讨论了是否应该更新文档以匹配当前接口的实现，或者更新接口以符合文档的描述。
-   - 李四建议，考虑到用户的体验和对文档的依赖性，优先考虑按照官方文档的描述来支持该接口。
-
-### **决策与结论**：
-
-- **结论**：需要更新 `requestInStream` 接口以符合官方文档的描述，确保实际使用和文档保持一致。
-- **行动**：由开发团队根据官方文档的描述进行接口的更新和测试，确保所有功能按预期工作。
-
-### **行动项**：
-
-- **张三**：负责详细分析官方文档，列出 `requestInStream` 接口需要支持的所有功能，**截止日期：2024年8月29日**。
-- **赵六**：负责协调开发团队进行接口的修改和测试，**截止日期：2024年9月5日**。
-
-### **下次会议**：
-
-- **时间**：2024年9月6日上午10:00  
-- **地点**：公司会议室/Zoom  
-
----
-
-请根据实际会议内容和公司格式进一步完善和调整这个纪要。
 
 携程旅行
 小红书
@@ -122,44 +96,3 @@ YY
 今日水印相机
 深信服零信任
 
-import React, { Component } from 'react';
-import {
-  StyleSheet,
-  KeyboardAvoidingView,
-  Platform,
-  TextInput,
-  View
-} from 'react-native';
-
-const App = ()=> {
-
-  return (
-    <View style={styles.container}>
-      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={{ width: '100%', height: "100%", justifyContent: "center" }}>
-        <TextInput
-          underlineColorAndroid={'#ffffff'}
-          placeholder="这里是一个简单的输入框"
-          style={styles.textInput} />
-      </KeyboardAvoidingView>
-    </View>
-  );
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: 'yellow',
-    //justifyContent: 'center',
-    paddingHorizontal: 20,
-    paddingTop: 20,
-  },
-  textInput: {
-    borderRadius: 5,
-    borderWidth: 1,
-    height: 140,
-    paddingHorizontal: 10,
-  },
-});
-
-export default App;
