@@ -5,6 +5,43 @@ https://gitee.com/openharmony/docs/blob/master/zh-cn/application-dev/reference/a
 https://developer.huawei.com/consumer/cn/doc/harmonyos-references-V5/ts-custom-component-lifecycle-V5#onbackpress  router路由的
 https://developer.huawei.com/consumer/cn/doc/harmonyos-references-V5/ts-basic-components-navdestination-V5#onbackpressed10  navigation路由的
 
+
+
+import React from 'react';
+import {SafeAreaView, StyleSheet} from 'react-native';
+import EditTable from './editTable'; // 假设 EditTable 是自定义组件
+
+// 导入 JSON 数据
+import newdata from './newdata.json';
+import titleData from './titleData.json';
+
+const App: React.FC = () => {
+  return (
+    <SafeAreaView style={styles.container}>
+      <EditTable
+        tableData={newdata} // 引入的主题内容数据
+        titleData={titleData} // 引入的标题数据
+        cellHeight={82} // 每个单元格的高度
+        titleHeight={44} // 标题行的高度
+        cellWidth={94} // 单元格的宽度
+        isZebraLine={true} // 是否开启斑马线
+        zebraLineColor={'#FBFBFB'} // 斑马线颜色
+        ContarinerStyle={{flex: 1}} // 组件的样式
+      />
+    </SafeAreaView>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+  },
+});
+
+export default App;
+
+
 以下是根据你提供的情况编写的会议纪要范例。请根据实际需要进行调整和补充。
 
 ---
