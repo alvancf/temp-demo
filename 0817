@@ -5,6 +5,28 @@ https://gitee.com/openharmony/docs/blob/master/zh-cn/application-dev/reference/a
 https://developer.huawei.com/consumer/cn/doc/harmonyos-references-V5/ts-custom-component-lifecycle-V5#onbackpress  router路由的
 https://developer.huawei.com/consumer/cn/doc/harmonyos-references-V5/ts-basic-components-navdestination-V5#onbackpressed10  navigation路由的
 
+import React from 'react'
+import {View ,Text,Image} from 'react-native'
+class Index extends React.Component {
+    constructor(props) {
+        super(props)
+    }
+    render(){
+        let star = require("./images/icon_star_selected.png")
+        return (
+            <View>
+                {
+                    new Array(10).fill(0).map(()=>(
+                        <Image  source={star}/>
+                    ))
+                }
+             </View>
+        )
+    }
+}
+
+export default Index
+
 import React, { useRef } from 'react';
 import { SafeAreaView, FlatList, Text, View, StyleSheet, Button } from 'react-native';
 
