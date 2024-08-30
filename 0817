@@ -6,154 +6,146 @@ https://developer.huawei.com/consumer/cn/doc/harmonyos-references-V5/ts-custom-c
 https://developer.huawei.com/consumer/cn/doc/harmonyos-references-V5/ts-basic-components-navdestination-V5#onbackpressed10  navigation路由的
 
 
- 序号ID号
-   1 240816161835090 
- 2 240827141507126 
- 3 240828211129027 
- 4 240828210042115 
- 5 240827152425096 
- 6 240827160528113 
- 7 240828193809117 
- 8 240827155212055 
- 9 240827160818109 
- 10 240827152608027 
- 11 240827151522053 
- 12 240827155019037 
- 13 240827160947022 
- 14 240827094144126 
- 15 240814142155045 
- 16 240820153426081 
-import React, { Component } from 'react';
-import { View ,TextInput} from 'react-native';
+import {useState} from 'react';
+import {
+View,
+StyleSheet,
+Text,
+TouchableOpacity,
+TextInput,
+} from 'react-native';
+import React from 'react';
 
-export default class TextInputDemo extends Component{
-   constructor(props){
-    super(props)
-    this.state = {
-        value:""
-    }
-   }
-    onChangeText=(text)=>{
-        let ruleArr = [3, 7]
-        let newText = '';
-        let ruleIndex = 0;
-        if (text) {
-          text = text.split(' ').join('');
-          text = text.replace(/\s+/g,"");   //textField组件修改编码格式,原先逻辑无法精准去除空格
-          for (let i = 0; i < text.length; i++) {
-            if (i % ruleArr[ruleIndex] == 0 && i != 0) {
-                ruleIndex++;
-                newText += ' ' + text[i];
-              } else {
-                newText += text[i];
-              }
-          }
-        }
-        this.setState({
-            value:newText
-        })
-    }
-    render(){
-        return(
-			<View>
-				<TextInput
-                    style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
-                    onChangeText={text =>{this.onChangeText(text)}}
-                    value={this.state.value}
-                    />
-			</View>
-        )
-    }
-}
+const Demo = () => {
+const [autoFocus1, setAutoFocus1] = useState(false);
+const [autoFocus2, setAutoFocus2] = useState(false);
+const [autoFocus3, setAutoFocus3] = useState(false);
+const [autoFocus4, setAutoFocus4] = useState(false);
 
-import React, { useRef } from 'react';
-import { SafeAreaView, FlatList, Text, View, StyleSheet, Button } from 'react-native';
-
-const DATA = [
-  { id: '1', title: 'Item 1' },
-  { id: '2', title: 'Item 2' },
-  { id: '3', title: 'Item 3' },
-  { id: '4', title: 'Item 4' },
-  { id: '5', title: 'Item 5' },
-  { id: '6', title: 'Item 6' },
-  { id: '7', title: 'Item 7' },
-  { id: '8', title: 'Item 8' },
-  { id: '9', title: 'Item 9' },
-  { id: '10', title: 'Item 10' },
-];
-
-const App = () => {
-  const flatListRef = useRef<FlatList>(null);
-
-  // 滚动到特定的索引
-  const scrollToIndex = (index: number) => {
-    flatListRef.current?.scrollToIndex({ index, animated: true });
-  };
-
-  const renderItem = ({ item }: { item: { title: string } }) => (
-    <View style={styles.item}>
-      <Text style={styles.title}>{item.title}</Text>
-    </View>
-  );
-
-  return (
-    <SafeAreaView style={styles.container}>
-      <Button title="Scroll to Item 5" onPress={() => scrollToIndex(4)} />
-      <FlatList
-        ref={flatListRef}
-        data={DATA}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.id}
-      />
-    </SafeAreaView>
-  );
+return (
+<View style={{paddingTop: 50}}>
+<View style={{flexDirection: 'row'}}>
+<View style={{width: 200, height: 100}}>
+{autoFocus1 ? (
+<TextInput
+style={{
+borderColor: 'red',
+borderWidth: 1,
+width: 100,
+height: 50,
+}}
+autoFocus={autoFocus1}
+/>
+) : (
+<TouchableOpacity
+onPress={() => {
+setAutoFocus1(true);
+setAutoFocus2(false);
+}}>
+<Text
+style={{
+borderColor: 'lightblue',
+borderWidth: 1,
+width: 100,
+height: 50,
+}}>
+çş˘č‰˛čž“ĺ…ĽćĄ†
+</Text>
+</TouchableOpacity>
+)}
+</View>
+<View style={{width: 200, height: 100}}>
+{autoFocus2 ? (
+<TextInput
+style={{
+borderColor: 'lightblue',
+borderWidth: 1,
+width: 100,
+height: 50,
+}}
+autoFocus={autoFocus2}
+/>
+) : (
+<TouchableOpacity
+onPress={() => {
+setAutoFocus2(true);
+setAutoFocus1(false);
+}}>
+<Text
+style={{
+borderColor: 'lightblue',
+borderWidth: 1,
+width: 100,
+height: 50,
+}}>
+č“č‰˛čž“ĺ…ĽćĄ†
+</Text>
+</TouchableOpacity>
+)}
+</View>
+</View>
+<View style={{flexDirection: 'row', marginTop: 40}}>
+<View style={{width: 200, height: 100}}>
+{autoFocus3 ? (
+<TextInput
+style={{
+borderColor: 'red',
+borderWidth: 1,
+width: 100,
+height: 50,
+}}
+autoFocus={autoFocus3}
+/>
+) : (
+<TouchableOpacity
+onPress={() => {
+setAutoFocus3(true);
+setAutoFocus4(false);
+}}>
+<Text
+style={{
+borderColor: 'lightblue',
+borderWidth: 1,
+width: 100,
+height: 50,
+}}>
+çş˘č‰˛čž“ĺ…ĽćĄ†
+</Text>
+</TouchableOpacity>
+)}
+</View>
+<View style={{width: 200, height: 100}}>
+{autoFocus4 ? (
+<TextInput
+style={{
+borderColor: 'lightblue',
+borderWidth: 1,
+width: 100,
+height: 50,
+}}
+autoFocus={autoFocus4}
+/>
+) : (
+<TouchableOpacity
+onPress={() => {
+setAutoFocus4(true);
+setAutoFocus3(false);
+}}>
+<Text
+style={{
+borderColor: 'lightblue',
+borderWidth: 1,
+width: 100,
+height: 50,
+}}>
+č“č‰˛čž“ĺ…ĽćĄ†
+</Text>
+</TouchableOpacity>
+)}
+</View>
+</View>
+</View>
+);
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  item: {
-    backgroundColor: '#f9c2ff',
-    padding: 20,
-    marginVertical: 8,
-    marginHorizontal: 16,
-  },
-  title: {
-    fontSize: 32,
-  },
-});
-
-export default App;
-
-携程旅行
-小红书
-快手
-喜马拉雅
-爱奇艺
-滴滴出行
-中国工商银行
-知乎
-YY
-叮咚买菜
-网上国网
-和家亲
-瑞幸咖啡
-顺丰速运
-安居客
-平安好车主
-驾校一点通
-途虎养车
-汽车之家
-瓜子二手车
-智行火车票
-云闪付
-平安口袋银行
-东方财富
-浦发银行
-平安金管家
-萤石云视频
-网易云音乐
-今日水印相机
-深信服零信任
-
+const styles = StyleSheet.create({});
+export default Demo;
