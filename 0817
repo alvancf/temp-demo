@@ -5,6 +5,18 @@ https://gitee.com/openharmony/docs/blob/master/zh-cn/application-dev/reference/a
 https://developer.huawei.com/consumer/cn/doc/harmonyos-references-V5/ts-custom-component-lifecycle-V5#onbackpress  router路由的
 https://developer.huawei.com/consumer/cn/doc/harmonyos-references-V5/ts-basic-components-navdestination-V5#onbackpressed10  navigation路由的
 
+<View style={{flex: 1, backgroundColor: 'red'}}>
+<View
+style={{
+width: 100,
+height: 100,
+backgroundColor: 'yellow',
+position: 'absolute',
+bottom: 0,
+left: 0,
+top: 'auto'
+}}></View>
+</View>
 
 import {useState} from 'react';
 import {
