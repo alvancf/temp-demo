@@ -5,6 +5,29 @@ https://gitee.com/openharmony/docs/blob/master/zh-cn/application-dev/reference/a
 https://developer.huawei.com/consumer/cn/doc/harmonyos-references-V5/ts-custom-component-lifecycle-V5#onbackpress  router路由的
 https://developer.huawei.com/consumer/cn/doc/harmonyos-references-V5/ts-basic-components-navdestination-V5#onbackpressed10  navigation路由的
 
+import React from 'react';
+import { TextInput, Alert, SafeAreaView } from 'react-native';
+
+const MyComponent = () => {
+  const handleKeyPress = (event) => {
+    console.log("event.nativeEvent.key: ", event.nativeEvent.key)
+    if (event.nativeEvent.key === 'Backspace' || event.nativeEvent.key === 'Delete') {
+      Alert.alert('Backspace Key Pressed');
+    }
+  };
+
+  return (
+    <SafeAreaView>
+    <TextInput
+      style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
+      onKeyPress={handleKeyPress}
+    />
+    </SafeAreaView>
+  );
+};
+
+export default MyComponent;
+
 <View style={{flex: 1, backgroundColor: 'red'}}>
 <View
 style={{
