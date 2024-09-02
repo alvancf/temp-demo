@@ -1,3 +1,24 @@
+@Entry
+@Component
+struct Index {
+
+  build() {
+    Scroll(){
+      Column(){
+        Column(){
+          Text('测试')
+        }
+        .height(1000)
+        TextInput()
+      }
+    }
+    .height('100%')
+    .width('100%')
+    .expandSafeArea([SafeAreaType.KEYBOARD])
+  }
+}
+
+
 https://docs.openharmony.cn/pages/v4.1/zh-cn/application-dev/reference/apis-core-file-kit/js-apis-file-fileuri.md
 
 https://gitee.com/openharmony/docs/blob/master/zh-cn/application-dev/reference/apis-network-kit/js-apis-http.md
