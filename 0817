@@ -1,3 +1,35 @@
+import React from 'react';
+import { TextInput, Alert, SafeAreaView, Button } from 'react-native';
+
+const MyComponent = () => {
+  const [codeText, setCodeText] = React.useState<string>()
+  const textChange = (text: string) => {
+    setCodeText('')
+}
+
+  const onKey = (event) => {
+    console.log(event.nativeEvent.key)
+    if (event.nativeEvent.key === 'Backspace' || event.nativeEvent.key === 'Delete') {
+      Alert.alert('Backspace Key Pressed');
+    }
+  }
+  return (
+    <SafeAreaView>
+      <TextInput
+      style = {{borderWidth: 1}}
+        value={codeText}
+        onChangeText={(text) => textChange(text)}
+        onKeyPress={onKey}
+      />
+      <Button title=' Press me ' onPress={()=>{setCodeText('')}}/>
+    </SafeAreaView>
+
+
+  );
+};
+
+export default MyComponent;
+
 @Entry
 @Component
 struct Index {
