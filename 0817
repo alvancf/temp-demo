@@ -9,7 +9,7 @@ const MyComponent = () => {
 
   const onKey = (event) => {
     console.log(event.nativeEvent.key)
-    if (event.nativeEvent.key === 'Backspace' || event.nativeEvent.key === 'Delete') {
+    if (event.nativeEvent.key === 'Backspace') {
       Alert.alert('Backspace Key Pressed');
     }
   }
