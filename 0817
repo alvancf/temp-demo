@@ -1,6 +1,6 @@
 
 import WebView from '@ohos.web.webview';
-import { RNBaseView } from './Views/RNBaseView';
+// import { RNBaseView } from './Views/RNBaseView';
 
 @Entry
 @Component
@@ -24,10 +24,11 @@ export struct PageWebHybrid {
         // 1. 这里不加Scroll时，上面的web和下面的原生list可以完美适配嵌套滚动；
         // 2. 加了Scroll之后，web和list同时出现在屏幕时，可以单独滚动list（不合理）；
         // 3. 加了Scroll之后，web和RN列表的情况，RN还是能单独滚动，不符合要求。
+        // rn的内容相当于不加nestedScroll的initList组件，由于我们不支持这个属性，无法在initList上设置nestedScroll属性
         Scroll() {
-          RNBaseView()
+          // RNBaseView()
           //   .enabled(this.listEnabled)
-          // this.initList()
+          this.initList()
         }
         .nestedScroll({
           scrollForward: NestedScrollMode.SELF_FIRST,
@@ -55,10 +56,10 @@ export struct PageWebHybrid {
           }, (item: string) => item)
         }.width("100%")
         .edgeEffect(EdgeEffect.Spring)
-        .nestedScroll({  // 这里为了使底部list下拉时可以滚动父组件Scroll
-          scrollForward: NestedScrollMode.PARENT_FIRST,
-          scrollBackward: NestedScrollMode.SELF_FIRST
-        })
+        // .nestedScroll({  // 这里为了使底部list下拉时可以滚动父组件Scroll
+        //   scrollForward: NestedScrollMode.PARENT_FIRST,
+        //   scrollBackward: NestedScrollMode.SELF_FIRST
+        // })
       }.tabBar("Tab1")
       TabContent() {
       }.tabBar("Tab2")
