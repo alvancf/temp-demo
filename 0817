@@ -1,306 +1,98 @@
-https://developer.huawei.com/consumer/cn/doc/harmonyos-references-V5/ts-container-scroll-V5#%E7%A4%BA%E4%BE%8B3
 
-import React from 'react';
-import { TextInput, Alert, SafeAreaView, Button } from 'react-native';
-
-const MyComponent = () => {
-  const [codeText, setCodeText] = React.useState<string>()
-  const textChange = (text: string) => {
-    setCodeText('')
-}
-
-  const onKey = (event) => {
-    console.log(event.nativeEvent.key)
-    if (event.nativeEvent.key === 'Backspace') {
-      Alert.alert('Backspace Key Pressed');
-    }
-  }
-  return (
-    <SafeAreaView>
-      <TextInput
-      style = {{borderWidth: 1}}
-        value={codeText}
-        onChangeText={(text) => textChange(text)}
-        onKeyPress={onKey}
-      />
-      <Button title=' Press me ' onPress={()=>{setCodeText('')}}/>
-    </SafeAreaView>
-
-
-  );
-};
-
-export default MyComponent;
+import WebView from '@ohos.web.webview';
+import { RNBaseView } from './Views/RNBaseView';
 
 @Entry
 @Component
-struct Index {
+export struct PageWebHybrid {
+  private scrollerForScroll: Scroller = new Scroller()
+  private controller: WebView.WebviewController = new WebView.WebviewController();
+  @State arr: number[] = []
+
+  aboutToAppear(): void {
+    for (let i = 0; i < 20; i++) {
+      this.arr.push(i)
+    }
+  }
 
   build() {
-    Scroll(){
-      Column(){
-        Column(){
-          Text('测试')
+    Scroll(this.scrollerForScroll) {
+      Column() {
+        this.initWebView()
+        Row().width('100%').height(26).backgroundColor('#F4F5F8')
+
+        // 1. 这里不加Scroll时，上面的web和下面的原生list可以完美适配嵌套滚动；
+        // 2. 加了Scroll之后，web和list同时出现在屏幕时，可以单独滚动list（不合理）；
+        // 3. 加了Scroll之后，web和RN列表的情况，RN还是能单独滚动，不符合要求。
+        Scroll() {
+          RNBaseView()
+          //   .enabled(this.listEnabled)
+          // this.initList()
         }
-        .height(1000)
-        TextInput()
+        .nestedScroll({
+          scrollForward: NestedScrollMode.SELF_FIRST,
+          scrollBackward: NestedScrollMode.PARENT_FIRST
+        })
+
       }
+    }.width("100%")
+    .scrollBar(BarState.Off)
+    .backgroundColor('#ffffff')
+  }
+
+  @Builder
+  initList() {
+    Tabs({ barPosition: BarPosition.Start }) {
+      TabContent() {
+        List({ space: 10 }) {
+          ForEach(this.arr, (item: number) => {
+            ListItem() {
+              Text("item" + item)
+                .fontSize(16)
+            }.height(72)
+            .width("100%")
+            .backgroundColor(Color.Gray)
+          }, (item: string) => item)
+        }.width("100%")
+        .edgeEffect(EdgeEffect.Spring)
+        .nestedScroll({  // 这里为了使底部list下拉时可以滚动父组件Scroll
+          scrollForward: NestedScrollMode.PARENT_FIRST,
+          scrollBackward: NestedScrollMode.SELF_FIRST
+        })
+      }.tabBar("Tab1")
+      TabContent() {
+      }.tabBar("Tab2")
     }
-    .height('100%')
-    .width('100%')
-    .expandSafeArea([SafeAreaType.KEYBOARD])
+    .vertical(false)
+    .height("100%")
+  }
+
+  @Builder
+  initWebView() {
+    Web({
+      src: 'https://developer.huawei.com/consumer/cn/doc/harmonyos-guides-V5/application-dev-guide-V5?catalogVersion=V5', //`resource://rawfile/test.html`,
+      controller: this.controller,
+    })
+      .nestedScroll({
+        scrollForward: NestedScrollMode.SELF_FIRST,
+        scrollBackward: NestedScrollMode.PARENT_FIRST,
+      })
+      .domStorageAccess(true)
+      .onlineImageAccess(true)
+      .imageAccess(true)
+      .zoomAccess(false)
+      .javaScriptAccess(true)
+      .fileAccess(true)
+      .geolocationAccess(true)
+      .cacheMode(CacheMode.None)
+      .verticalScrollBarAccess(false)
+      .horizontalScrollBarAccess(false)
+      .overScrollMode(OverScrollMode.NEVER)
+      .onOverrideUrlLoading((webResourceRequest: WebResourceRequest) => {
+        const url = webResourceRequest.getRequestUrl() ?? ''
+        console.log("StatusDetail-onOverrideUrlLoading :" + url);
+        return true;
+      })
+      .height('100%')
   }
 }
-
-
-https://docs.openharmony.cn/pages/v4.1/zh-cn/application-dev/reference/apis-core-file-kit/js-apis-file-fileuri.md
-
-https://gitee.com/openharmony/docs/blob/master/zh-cn/application-dev/reference/apis-network-kit/js-apis-http.md
-
-https://developer.huawei.com/consumer/cn/doc/harmonyos-references-V5/ts-custom-component-lifecycle-V5#onbackpress  router路由的
-https://developer.huawei.com/consumer/cn/doc/harmonyos-references-V5/ts-basic-components-navdestination-V5#onbackpressed10  navigation路由的
-
-import { Tester, TestSuite, TestCase } from '@rnoh/testerino';
-import React, { useEffect, useRef, useState } from 'react';
-import { View, TextInput, StyleSheet, Dimensions, Text, ScrollView } from 'react-native';
-
-
-function BugMeasureDemo() {
-    
-    const viewRef = useRef<View | null>(null);
-    
-    const [pageH, setpageH] = useState(0);
-    
-    const [measurePageY, setmeasurePageY] = useState(0);
-    
-    useEffect(() => {
-        setpageH( Dimensions.get('window').height);
-        const tid = setInterval(getPageY, 1000);
-        return () => {
-            clearInterval(tid);
-        }
-    }, []);
-    
-    const getPageY = () => {
-        viewRef.current?.measure((x, y, width, height, pageX, pageY) => {
-            setmeasurePageY(pageY);
-        });
-    } 
-    
-    return (
-        <>
-            <ScrollView>
-            <Tester>
-                <TestSuite name='Measure Bug'>
-                    {
-                        Array.from({length: 12}).map((_, i) => 
-                        <TestCase key={i} itShould={`TextInput ${i}`}>
-                            <TextInput style={styles.inp} />
-                        </TestCase>
-                        )
-                    }
-                    <TestCase itShould={`点击输入框键盘弹起，计算的PageY发生错误`}>
-                        <Text>windowHeight: {pageH}</Text>
-                        <Text>PageY: {measurePageY}</Text>
-                        <View ref={viewRef}>
-                            <TextInput style={[styles.inp, {borderColor: '#000'}]} />
-                        </View>
-                    </TestCase>
-                </TestSuite>
-            </Tester>
-            </ScrollView>
-        </>
-    )
-}
-
-const styles = StyleSheet.create({
-    inp: {
-        height: 36,
-        borderWidth: 1,
-        borderColor: '#f0f0f0',
-        borderRadius: 6
-    }
-})
-
-export default BugMeasureDemo
-
-
-import React from 'react';
-import { TextInput, Alert, SafeAreaView } from 'react-native';
-
-const MyComponent = () => {
-  const handleKeyPress = (event) => {
-    console.log("event.nativeEvent.key: ", event.nativeEvent.key)
-    if (event.nativeEvent.key === 'Backspace' || event.nativeEvent.key === 'Delete') {
-      Alert.alert('Backspace Key Pressed');
-    }
-  };
-
-  return (
-    <SafeAreaView>
-    <TextInput
-      style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
-      onKeyPress={handleKeyPress}
-    />
-    </SafeAreaView>
-  );
-};
-
-export default MyComponent;
-
-<View style={{flex: 1, backgroundColor: 'red'}}>
-<View
-style={{
-width: 100,
-height: 100,
-backgroundColor: 'yellow',
-position: 'absolute',
-bottom: 0,
-left: 0,
-top: 'auto'
-}}></View>
-</View>
-
-import {useState} from 'react';
-import {
-View,
-StyleSheet,
-Text,
-TouchableOpacity,
-TextInput,
-} from 'react-native';
-import React from 'react';
-
-const Demo = () => {
-const [autoFocus1, setAutoFocus1] = useState(false);
-const [autoFocus2, setAutoFocus2] = useState(false);
-const [autoFocus3, setAutoFocus3] = useState(false);
-const [autoFocus4, setAutoFocus4] = useState(false);
-
-return (
-<View style={{paddingTop: 50}}>
-<View style={{flexDirection: 'row'}}>
-<View style={{width: 200, height: 100}}>
-{autoFocus1 ? (
-<TextInput
-style={{
-borderColor: 'red',
-borderWidth: 1,
-width: 100,
-height: 50,
-}}
-autoFocus={autoFocus1}
-/>
-) : (
-<TouchableOpacity
-onPress={() => {
-setAutoFocus1(true);
-setAutoFocus2(false);
-}}>
-<Text
-style={{
-borderColor: 'lightblue',
-borderWidth: 1,
-width: 100,
-height: 50,
-}}>
-çş˘č‰˛čž“ĺ…ĽćĄ†
-</Text>
-</TouchableOpacity>
-)}
-</View>
-<View style={{width: 200, height: 100}}>
-{autoFocus2 ? (
-<TextInput
-style={{
-borderColor: 'lightblue',
-borderWidth: 1,
-width: 100,
-height: 50,
-}}
-autoFocus={autoFocus2}
-/>
-) : (
-<TouchableOpacity
-onPress={() => {
-setAutoFocus2(true);
-setAutoFocus1(false);
-}}>
-<Text
-style={{
-borderColor: 'lightblue',
-borderWidth: 1,
-width: 100,
-height: 50,
-}}>
-č“č‰˛čž“ĺ…ĽćĄ†
-</Text>
-</TouchableOpacity>
-)}
-</View>
-</View>
-<View style={{flexDirection: 'row', marginTop: 40}}>
-<View style={{width: 200, height: 100}}>
-{autoFocus3 ? (
-<TextInput
-style={{
-borderColor: 'red',
-borderWidth: 1,
-width: 100,
-height: 50,
-}}
-autoFocus={autoFocus3}
-/>
-) : (
-<TouchableOpacity
-onPress={() => {
-setAutoFocus3(true);
-setAutoFocus4(false);
-}}>
-<Text
-style={{
-borderColor: 'lightblue',
-borderWidth: 1,
-width: 100,
-height: 50,
-}}>
-çş˘č‰˛čž“ĺ…ĽćĄ†
-</Text>
-</TouchableOpacity>
-)}
-</View>
-<View style={{width: 200, height: 100}}>
-{autoFocus4 ? (
-<TextInput
-style={{
-borderColor: 'lightblue',
-borderWidth: 1,
-width: 100,
-height: 50,
-}}
-autoFocus={autoFocus4}
-/>
-) : (
-<TouchableOpacity
-onPress={() => {
-setAutoFocus4(true);
-setAutoFocus3(false);
-}}>
-<Text
-style={{
-borderColor: 'lightblue',
-borderWidth: 1,
-width: 100,
-height: 50,
-}}>
-č“č‰˛čž“ĺ…ĽćĄ†
-</Text>
-</TouchableOpacity>
-)}
-</View>
-</View>
-</View>
-);
-};
-const styles = StyleSheet.create({});
-export default Demo;
