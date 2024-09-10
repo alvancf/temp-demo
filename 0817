@@ -1,57 +1,63 @@
-import * as React from 'react';
-import { Button, Text, TextInput, View } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+import { Tester, TestSuite, TestCase } from '@rnoh/testerino';
+import React, { useEffect, useRef, useState } from 'react';
+import { View, TextInput, StyleSheet, Dimensions, Text, ScrollView } from 'react-native';
 
-const HomeStack = createStackNavigator();
 
-function HomeScreen({ navigation }) {
+function BugMeasureDemo() {
+    
+    const viewRef = useRef<View | null>(null);
+    
+    const [pageH, setpageH] = useState(0);
+    
+    const [measurePageY, setmeasurePageY] = useState(0);
+    
+    useEffect(() => {
+        setpageH( Dimensions.get('window').height);
+        const tid = setInterval(getPageY, 1000);
+        return () => {
+            clearInterval(tid);
+        }
+    }, []);
+    
+    const getPageY = () => {
+        viewRef.current?.measure((x, y, width, height, pageX, pageY) => {
+            setmeasurePageY(pageY);
+        });
+    } 
+    
     return (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-            <TextInput
-                style={{ height: 40, width:280,borderColor: 'gray', borderWidth: 1, marginTop: 50 }}
-            />
-            <Text>Home screen</Text>
-            <Button
-                title="Go to Details"
-                onPress={() => navigation.navigate('Details')}
-            />
-        </View>
-    );
+        <>
+            <ScrollView>
+            <Tester>
+                <TestSuite name='Measure Bug'>
+                    {
+                        Array.from({length: 12}).map((_, i) => 
+                        <TestCase key={i} itShould={`TextInput ${i}`}>
+                            <TextInput style={styles.inp} />
+                        </TestCase>
+                        )
+                    }
+                    <TestCase itShould={`点击输入框键盘弹起，计算的PageY发生错误`}>
+                        <Text>windowHeight: {pageH}</Text>
+                        <Text>PageY: {measurePageY}</Text>
+                        <View ref={viewRef}>
+                            <TextInput style={[styles.inp, {borderColor: '#000'}]} />
+                        </View>
+                    </TestCase>
+                </TestSuite>
+            </Tester>
+            </ScrollView>
+        </>
+    )
 }
 
-function DetailsScreen({ navigation }) {
-    return (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-            <Text>Details!</Text>
-            <Button
-                title="Go to Details2"
-                onPress={() => navigation.navigate('Details2')}
-            />
-        </View>
-    );
-}
+const styles = StyleSheet.create({
+    inp: {
+        height: 36,
+        borderWidth: 1,
+        borderColor: '#f0f0f0',
+        borderRadius: 6
+    }
+})
 
-function Details2Screen({ navigation }) {
-    return (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-            <Text>Details2!</Text>
-            <Button
-                title="Go back"
-                onPress={() => navigation.goBack()}
-            />
-        </View>
-    );
-}
-
-export default function App() {
-    return (
-        <NavigationContainer>
-            <HomeStack.Navigator>
-                <HomeStack.Screen name="Home" component={HomeScreen} />
-                <HomeStack.Screen name="Details" component={DetailsScreen} />
-                <HomeStack.Screen name="Details2" component={Details2Screen} />
-            </HomeStack.Navigator>
-        </NavigationContainer>
-    );
-}
+export default BugMeasureDemo
