@@ -1,63 +1,42 @@
-import { Tester, TestSuite, TestCase } from '@rnoh/testerino';
-import React, { useEffect, useRef, useState } from 'react';
-import { View, TextInput, StyleSheet, Dimensions, Text, ScrollView } from 'react-native';
+import React, { Component } from 'react';
+import { View ,TextInput} from 'react-native';
 
-
-function BugMeasureDemo() {
-    
-    const viewRef = useRef<View | null>(null);
-    
-    const [pageH, setpageH] = useState(0);
-    
-    const [measurePageY, setmeasurePageY] = useState(0);
-    
-    useEffect(() => {
-        setpageH( Dimensions.get('window').height);
-        const tid = setInterval(getPageY, 1000);
-        return () => {
-            clearInterval(tid);
-        }
-    }, []);
-    
-    const getPageY = () => {
-        viewRef.current?.measure((x, y, width, height, pageX, pageY) => {
-            setmeasurePageY(pageY);
-        });
-    } 
-    
-    return (
-        <>
-            <ScrollView>
-            <Tester>
-                <TestSuite name='Measure Bug'>
-                    {
-                        Array.from({length: 12}).map((_, i) => 
-                        <TestCase key={i} itShould={`TextInput ${i}`}>
-                            <TextInput style={styles.inp} />
-                        </TestCase>
-                        )
-                    }
-                    <TestCase itShould={`点击输入框键盘弹起，计算的PageY发生错误`}>
-                        <Text>windowHeight: {pageH}</Text>
-                        <Text>PageY: {measurePageY}</Text>
-                        <View ref={viewRef}>
-                            <TextInput style={[styles.inp, {borderColor: '#000'}]} />
-                        </View>
-                    </TestCase>
-                </TestSuite>
-            </Tester>
-            </ScrollView>
-        </>
-    )
-}
-
-const styles = StyleSheet.create({
-    inp: {
-        height: 36,
-        borderWidth: 1,
-        borderColor: '#f0f0f0',
-        borderRadius: 6
+export default class TextInputDemo extends Component{
+   constructor(props){
+    super(props)
+    this.state = {
+        value:""
     }
-})
-
-export default BugMeasureDemo
+   }
+    onChangeText=(text)=>{
+        let ruleArr = [3, 7]
+        let newText = '';
+        let ruleIndex = 0;
+        if (text) {
+          text = text.split(' ').join('');
+          text = text.replace(/\s+/g,"");   //textField组件修改编码格式,原先逻辑无法精准去除空格
+          for (let i = 0; i < text.length; i++) {
+            if (i % ruleArr[ruleIndex] == 0 && i != 0) {
+                ruleIndex++;
+                newText += ' ' + text[i];
+              } else {
+                newText += text[i];
+              }
+          }
+        }
+        this.setState({
+            value:newText
+        })
+    }
+    render(){
+        return(
+			<View>
+				<TextInput
+                    style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
+                    onChangeText={text =>{this.onChangeText(text)}}
+                    value={this.state.value}
+                    />
+			</View>
+        )
+    }
+}
