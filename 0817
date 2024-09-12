@@ -1,4 +1,4 @@
-  public async runJSBundle(jsBundleProvider: JSBundleProvider, info?:string | null) {
+ public async runJSBundle(jsBundleProvider: JSBundleProvider, info?:string | null) {
     const stopTracing = this.logger.clone("runJSBundle").startTracing()
     const bundleURL = jsBundleProvider.getURL()
     const isMetroServer = jsBundleProvider.getHotReloadConfig() !== null
@@ -11,75 +11,52 @@
           `${info.slice(0, 255)}`)
       }
 
-demo1  路由切换键盘未杀死问题
-import * as React from 'react';
-import {Button, Text, TextInput, View} from 'react-native';
-import {NavigationContainer} from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack';
-
-const HomeStack = createStackNavigator();
-
-function HomeScreen({navigation}) {
-  return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: 'yellow',
-      }}>
-      <TextInput
-        style={{
-          height: 40,
-          width: 280,
-          borderColor: 'gray',
-          borderWidth: 1,
-          marginTop: 50,
-        }}
-      />
-      <Text>Home screen</Text>
-      <Button
-        title="Go to Details"
-        onPress={() => navigation.navigate('Details')}
-      />
-    </View>
-  );
-}
-
-function DetailsScreen({navigation}) {
-  return (
-    <View
-      style={{
-        flex: 1,
-        // justifyContent: 'center',
-        // alignItems: 'center',
-        backgroundColor: 'red',
-      }}>
-      <Text>Details!</Text>
-      <TextInput
-        style={{
-          height: 40,
-          width: 280,
-          borderColor: 'gray',
-          borderWidth: 1,
-          marginTop: 50,
-        }}
-      />
-      <Button
-        title="Go to Details2"
-        onPress={() => navigation.navigate('Details2')}
-      />
-
-      <Button title="Go back" onPress={() => navigation.goBack()} />
-    </View>
-  );
-}
-
-function Details2Screen({navigation}) {
-  return (
-    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      <Text>Details2!</Text>
-      <Button title="Go back" onPress={() => navigation.goBack()} />
-    </View>
-  );
-}
+      // 1、如果没填走现有逻辑
+      // 2、如果填的空字符串或者null，不调用哪个
+      // 3、如果填的字符串，那么长度最大255截断！
+      // 255 len
+      this.bundleExecutionStatusByBundleURL.set(bundleURL, "RUNNING")
+      const jsBundle = await jsBundleProvider.getBundle((progress) => {
+        this.devToolsController.eventEmitter.emit("SHOW_DEV_LOADING_VIEW", this.id,
+          `Loading from ${jsBundleProvider.getHumanFriendlyURL()} (${Math.round(progress * 100)}%)`)
+      })
+      this.initialBundleUrl = this.initialBundleUrl ?? jsBundleProvider.getURL()
+      await this.napiBridge.loadScript(this.id, jsBundle, bundleURL)
+      this.napiBridge.setBundlePath(this.id, jsBundleProvider.getURL());
+      this.lifecycleState = LifecycleState.READY
+      const hotReloadConfig = jsBundleProvider.getHotReloadConfig()
+      if (hotReloadConfig) {
+        this.callRNFunction("HMRClient", "setup",
+          ["harmony", hotReloadConfig.bundleEntry, hotReloadConfig.host, hotReloadConfig.port, true])
+        this.logger.info("Configured hot reloading")
+      }
+      const isRemoteBundle = bundleURL.startsWith("http")
+      if (this.shouldEnableDebugger && isRemoteBundle) {
+        DevServerHelper.connectToDevServer(bundleURL, this.logger, this.napiBridge.getInspectorWrapper());
+      }
+      this.bundleExecutionStatusByBundleURL.set(bundleURL, "DONE")
+      this.lifecycleEventEmitter.emit("JS_BUNDLE_EXECUTION_FINISH", {
+        jsBundleUrl: bundleURL,
+        appKeys: jsBundleProvider.getAppKeys()
+      })
+    } catch (err) {
+      this.bundleExecutionStatusByBundleURL.delete(bundleURL)
+      if (err instanceof JSBundleProviderError) {
+        this.logger.error(err)
+      } else {
+        const suggestions: string[] = []
+        if (isMetroServer) {
+          suggestions.push("Please check your Metro Server console. Likely, the error details you need are displayed there.")
+        }
+        suggestions.push("Please revise your application code. It may contain syntax errors or unhandled exceptions at the top level that could be causing runtime failures.")
+        this.logger.error(new RNOHError({
+          whatHappened: "Couldn't run a JS bundle",
+          howCanItBeFixed: suggestions,
+          extraData: err,
+        }))
+      }
+    } finally {
+      this.devToolsController.eventEmitter.emit("HIDE_DEV_LOADING_VIEW", this.id)
+      stopTracing()
+    }
+  }
