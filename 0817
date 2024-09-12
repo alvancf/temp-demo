@@ -1,3 +1,16 @@
+  public async runJSBundle(jsBundleProvider: JSBundleProvider, info?:string | null) {
+    const stopTracing = this.logger.clone("runJSBundle").startTracing()
+    const bundleURL = jsBundleProvider.getURL()
+    const isMetroServer = jsBundleProvider.getHotReloadConfig() !== null
+    try {
+      if(info === undefined) {
+        this.devToolsController.eventEmitter.emit("SHOW_DEV_LOADING_VIEW", this.id,
+          `Loading from ${jsBundleProvider.getHumanFriendlyURL()}...`)
+      }else if(info) {
+        this.devToolsController.eventEmitter.emit("SHOW_DEV_LOADING_VIEW", this.id,
+          `${info.slice(0, 255)}`)
+      }
+
 demo1  路由切换键盘未杀死问题
 import * as React from 'react';
 import {Button, Text, TextInput, View} from 'react-native';
