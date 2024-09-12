@@ -1,42 +1,100 @@
-import React, { Component } from 'react';
-import { View ,TextInput} from 'react-native';
 
-export default class TextInputDemo extends Component{
-   constructor(props){
-    super(props)
-    this.state = {
-        value:""
+interface paramType {
+  param: string
+}
+
+let paramA: paramType = {
+  param: 'test1'
+}
+
+@Entry
+@Component
+struct Index {
+  @State message: string = 'Hello World';
+  @Provide('pathInfos') pathInfos: NavPathStack = new NavPathStack();
+
+  @Builder
+  myRouter(name: string) {
+    if (name === 'MyFirstNavDestination') {
+      MyFirstNavDestination()
+    } else if (name === 'MySecondNavDestination') {
+      MySecondNavDestination()
     }
-   }
-    onChangeText=(text)=>{
-        let ruleArr = [3, 7]
-        let newText = '';
-        let ruleIndex = 0;
-        if (text) {
-          text = text.split(' ').join('');
-          text = text.replace(/\s+/g,"");   //textField组件修改编码格式,原先逻辑无法精准去除空格
-          for (let i = 0; i < text.length; i++) {
-            if (i % ruleArr[ruleIndex] == 0 && i != 0) {
-                ruleIndex++;
-                newText += ' ' + text[i];
-              } else {
-                newText += text[i];
-              }
-          }
+  }
+
+  build() {
+    Navigation(this.pathInfos) {
+      Column() {
+        TextInput({ placeholder: '搜索论坛名称' }).placeholderColor("#111E36").underlineColor('transparent')
+          .textAlign(TextAlign.Center)
+
+        Button('StartTest', { stateEffect: true, type: ButtonType.Capsule })
+          .width('80%')
+          .height(40)
+          .margin(20)
+          .onClick(() => {
+            this.pathInfos.pushPathByName('MyFirstNavDestination', paramA);
+          })
+      }
+    }.title('NavIndex').navDestination(this.myRouter)
+  }
+}
+
+@Component
+export struct MyFirstNavDestination {
+  @Consume('pathInfos') pathInfos: NavPathStack;
+
+  getParamsPrint() {
+    console.info('xuerui', 'param is ' + JSON.stringify(this.pathInfos.getParamByName('MyFirstNavDestination')));
+  }
+
+  build() {
+    NavDestination() {
+      Row() {
+        Column() {
+          Text('MyFirstNavDestination')
+          Button('MySecondNavDestination', { stateEffect: true, type: ButtonType.Capsule })
+            .width('80%')
+            .height(40)
+            .margin(20)
+            .onClick(() => {
+              this.pathInfos.pushPathByName('MySecondNavDestination', null);
+            })
         }
-        this.setState({
-            value:newText
-        })
-    }
-    render(){
-        return(
-			<View>
-				<TextInput
-                    style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
-                    onChangeText={text =>{this.onChangeText(text)}}
-                    value={this.state.value}
-                    />
-			</View>
-        )
-    }
+        .width('100%')
+      }
+      .height('100%')
+    }.onShown(() => {
+      this.getParamsPrint();
+    })
+  }
+}
+
+@Component
+export struct MySecondNavDestination {
+  @Consume('pathInfos') pathInfos: NavPathStack;
+  private routerParams: paramType = { param: 'test 2' };
+
+  build() {
+    NavDestination() {
+      Row() {
+        Text('MySecondNavDestination')
+      }
+      .height('100%')
+    }.onBackPressed(() => {
+      // pop B页面
+      this.pathInfos.pop();
+
+      //获取当前栈顶页面名字（A页面）
+      let allPathName: Array<string> = this.pathInfos.getAllPathName();
+      let pathNameA: string = allPathName[allPathName.length - 1];
+
+      // pop A页面
+      this.pathInfos.pop();
+
+      // 重新PUSH A页面
+      this.pathInfos.pushPath(new NavPathInfo(pathNameA, this.routerParams))
+      return true;
+    })
+  }
 }
