@@ -1,4 +1,9 @@
-问题1，问题2：
+针对工行输入框键盘弹起的问题分析：
+情况1：A跳到B，B跳到C，C跳回到B，触发了A页面输入框的autoFocus
 根因分析:B跳转到C,A页面display:none,C跳转到B，A页面display:flex。在这个过程中A页面元素有个销毁到重新渲染的过程。这块逻辑在react-native-screens中实现的。
-解决方案：
-方案、修改navigation/stack库，在node_modules/@react-navigation/stack/src/views/Screens.tsx 中用到了react-native-screens库，此库尚未鸿蒙化。在36行加下判断harmony平台走42行view；
+解决方案：修改navigation/stack库，在node_modules/@react-navigation/stack/src/views/Screens.tsx 中用到了react-native-screens库，此库尚未鸿蒙化。在36行加下判断harmony平台走42行view(代码片段：if(Screens !== null && Platform.OS !== 'harmony'))
+
+情况2：A页面的键盘聚焦跳转到B，A页面的键盘未收起
+情况3：B页面拉起键盘，跳转到A，B页面的键盘未收起
+
+情况2、3解决方案：待提供rnoh新版本，以及依赖rom版本（内部已验证解决）
