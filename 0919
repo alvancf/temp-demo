@@ -1,9 +1,93 @@
-针对工行输入框键盘弹起的问题分析：
-情况1：A跳到B，B跳到C，C跳回到B，触发了A页面输入框的autoFocus
-根因分析:B跳转到C,A页面display:none,C跳转到B，A页面display:flex。在这个过程中A页面元素有个销毁到重新渲染的过程。这块逻辑在react-native-screens中实现的。
-解决方案：修改navigation/stack库，在node_modules/@react-navigation/stack/src/views/Screens.tsx 中用到了react-native-screens库，此库尚未鸿蒙化。在36行加下判断harmony平台走42行view(代码片段：if(Screens !== null && Platform.OS !== 'harmony'))
+import React from 'react';
+import {Text, ScrollView} from 'react-native';
 
-情况2：A页面的键盘聚焦跳转到B，A页面的键盘未收起
-情况3：B页面拉起键盘，跳转到A，B页面的键盘未收起
+const ScrollViewTestDemo = () => {
+  function onMomentumScrollBegin() {
+    console.log('debuglog  onMomentumScrollBegin');
+  }
+  function onMomentumScrollEnd(e: any) {
+    console.log('debuglog  onMomentumScrollEnd');
+  }
 
-情况2、3解决方案：待提供rnoh新版本，以及依赖rom版本（内部已验证解决）
+  return (
+    <ScrollView
+      style={{height:100,backgroundColor:'white'}}
+      onMomentumScrollBegin={onMomentumScrollBegin}
+      onMomentumScrollEnd={onMomentumScrollEnd}>
+      <Text>大王叫我来巡山1</Text>
+      <Text>大王叫我来巡山2</Text>
+      <Text>大王叫我来巡山3</Text>
+      <Text>大王叫我来巡山4</Text>
+      <Text>大王叫我来巡山5</Text>
+      <Text>大王叫我来巡山6</Text>
+      <Text>大王叫我来巡山1</Text>
+      <Text>大王叫我来巡山2</Text>
+      <Text>大王叫我来巡山3</Text>
+      <Text>大王叫我来巡山4</Text>
+      <Text>大王叫我来巡山5</Text>
+      <Text>大王叫我来巡山6</Text>
+      <Text>大王叫我来巡山1</Text>
+      <Text>大王叫我来巡山2</Text>
+      <Text>大王叫我来巡山3</Text>
+      <Text>大王叫我来巡山4</Text>
+      <Text>大王叫我来巡山5</Text>
+      <Text>大王叫我来巡山6</Text>
+      <Text>大王叫我来巡山1</Text>
+      <Text>大王叫我来巡山2</Text>
+      <Text>大王叫我来巡山3</Text>
+      <Text>大王叫我来巡山4</Text>
+      <Text>大王叫我来巡山5</Text>
+      <Text>大王叫我来巡山6</Text>
+      <Text>大王叫我来巡山1</Text>
+      <Text>大王叫我来巡山2</Text>
+      <Text>大王叫我来巡山3</Text>
+      <Text>大王叫我来巡山4</Text>
+      <Text>大王叫我来巡山5</Text>
+      <Text>大王叫我来巡山6</Text>
+      <Text>大王叫我来巡山1</Text>
+      <Text>大王叫我来巡山2</Text>
+      <Text>大王叫我来巡山3</Text>
+      <Text>大王叫我来巡山4</Text>
+      <Text>大王叫我来巡山5</Text>
+      <Text>大王叫我来巡山6</Text>
+      <Text>大王叫我来巡山1</Text>
+      <Text>大王叫我来巡山2</Text>
+      <Text>大王叫我来巡山3</Text>
+      <Text>大王叫我来巡山4</Text>
+      <Text>大王叫我来巡山5</Text>
+      <Text>大王叫我来巡山6</Text>
+      <Text>大王叫我来巡山1</Text>
+      <Text>大王叫我来巡山2</Text>
+      <Text>大王叫我来巡山3</Text>
+      <Text>大王叫我来巡山4</Text>
+      <Text>大王叫我来巡山5</Text>
+      <Text>大王叫我来巡山6</Text>
+      <Text>大王叫我来巡山1</Text>
+      <Text>大王叫我来巡山2</Text>
+      <Text>大王叫我来巡山3</Text>
+      <Text>大王叫我来巡山4</Text>
+      <Text>大王叫我来巡山5</Text>
+      <Text>大王叫我来巡山6</Text>
+      <Text>大王叫我来巡山1</Text>
+      <Text>大王叫我来巡山2</Text>
+      <Text>大王叫我来巡山3</Text>
+      <Text>大王叫我来巡山4</Text>
+      <Text>大王叫我来巡山5</Text>
+      <Text>大王叫我来巡山6</Text>
+      <Text>大王叫我来巡山1</Text>
+      <Text>大王叫我来巡山2</Text>
+      <Text>大王叫我来巡山3</Text>
+      <Text>大王叫我来巡山4</Text>
+      <Text>大王叫我来巡山5</Text>
+      <Text>大王叫我来巡山6</Text>
+      <Text>大王叫我来巡山1</Text>
+      <Text>大王叫我来巡山2</Text>
+      <Text>大王叫我来巡山3</Text>
+      <Text>大王叫我来巡山4</Text>
+      <Text>大王叫我来巡山5</Text>
+      <Text>大王叫我来巡山6</Text>
+    </ScrollView>
+  );
+};
+
+export default ScrollViewTestDemo;
