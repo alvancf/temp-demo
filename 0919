@@ -69,23 +69,77 @@ const ScrollViewTestDemo = () => {
           selection={{start: 2, end: 2}}
         />
       </View>
-      {/* <View style={styles.viewValue}> */}
-      <Text>35.3、selectionColor：pink(设置选中的文本内容的颜色)</Text>
-      {/* <Image
-          source={require('../../../assets/textinputSelectionColor.png')}
-          resizeMode="contain"
-          style={{width: '100%'}}
-        /> */}
-      <Text>实际效果：点击输入框开始验证</Text>
-      <TextInput
-        // style={styles.default}
-        defaultValue="点击输入框可以选择文字并且选中的文字是粉色的"
-        // selection={{ start: 2, end: 5 }}
-        selectionColor="pink"
-      />
     </View>
   );
 };
 
 export default ScrollViewTestDemo;
+
+
+
+import React from 'react';
+import {
+  Text,
+  ScrollView,
+  View,
+  TextInput,
+  KeyboardAvoidingView,
+  Pressable,
+} from 'react-native';
+
+const KeyboardAvoidingEnabled = () => {
+  const [changeValue, setChangeValue] = React.useState(true);
+  return (
+    <View
+      style={{
+        flex: 1,
+        alignContent: 'center',
+        justifyContent: 'center',
+        height: 700,
+      }}>
+      <Text>属性值：{'enabled={changeValue}'}</Text>
+      <Text>预期结果：</Text>
+      <Text>1.当changeValue的值为true时，在输入框内点击，边框不会被遮挡</Text>
+      <Text>2.当changeValue的值为false时，在输入框内点击，边框被遮挡</Text>
+      <Text>实际结果：</Text>
+      <Pressable
+        style={{backgroundColor: '#AFEEEE', borderRadius: 5}}
+        onPress={() => {
+          setChangeValue(!changeValue);
+        }}>
+        <Text
+          style={{
+            fontSize: 16,
+            textAlign: 'center',
+            paddingTop: 10,
+            paddingBottom: 10,
+          }}>
+          按压切换changeValue：{JSON.stringify(changeValue)}
+        </Text>
+      </Pressable>
+      <KeyboardAvoidingView
+        behavior="padding"
+        enabled={changeValue}
+        style={{
+          flex: 1,
+          backgroundColor: 'greeen',
+          justifyContent: 'center',
+          paddingHorizontal: 20,
+          paddingTop: 20,
+        }}>
+        <TextInput
+          defaultValue="defaultValue"
+          style={{
+            borderRadius: 5,
+            borderWidth: 1,
+            height: 300,
+            paddingHorizontal: 10,
+          }}></TextInput>
+      </KeyboardAvoidingView>
+    </View>
+  );
+};
+
+export default KeyboardAvoidingEnabled;
+
 
