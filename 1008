@@ -1,0 +1,108 @@
+import React from 'react';
+import {
+  Text,
+  ScrollView,
+  View,
+  TextInput,
+  KeyboardAvoidingView,
+  Pressable,
+} from 'react-native';
+
+const ScrollViewTestDemo = () => {
+  const [value, setValue] = React.useState('');
+  const [changeValue, setChangeValue] = React.useState(true);
+
+  return (
+    <View style={{marginTop: 200}}>
+      <View>
+        <Text>预期效果：文本框内容会的值是value test</Text>
+        {/* <Image
+          resizeMode="contain"
+          style={{width: '100%'}}
+          source={require('../../../assets/textinputValue.png')}></Image> */}
+      </View>
+      <View>
+        <Text>实际效果：</Text>
+        <TextInput
+          // value='value test'
+          value={'?'}
+          onChangeText={text => {
+            setValue(text);
+          }}
+        />
+      </View>
+      <Text>35.1、selection：设置文本输入的选择的开始位置和结束位置。</Text>
+      <View>
+        <Text>selection：start:2,end:5</Text>
+        {/* <Image
+          source={require('../../../assets/textinputSelection.png')}
+          resizeMode="contain"
+          style={{width: '100%'}}
+        /> */}
+        <Text>实际效果：点击输入框开始验证</Text>
+        <TextInput
+          // style={styles.default}
+          defaultValue="点击输入框可以选择文字"
+          selection={{start: 2, end: 5}}
+        />
+      </View>
+      <View>
+        <Text>
+          35.2、selection：start:2,end:2(将开始和结束设置为相同的值以定位光标。)
+        </Text>
+        {/* <Image
+          source={require('../../../assets/textinputSelectionSame.png')}
+          resizeMode="contain"
+          style={{width: '100%'}}
+        /> */}
+        <Text>实际效果：点击输入框开始验证</Text>
+        <TextInput
+          // style={styles.default}
+          defaultValue="点击输入框可以选择文字"
+          selection={{start: 2, end: 2}}
+        />
+      </View>
+      <Text>属性值：{'enabled={changeValue}'}</Text>
+      <Text>预期结果：</Text>
+      <Text>1.当changeValue的值为true时，在输入框内点击，边框不会被遮挡</Text>
+      <Text>2.当changeValue的值为false时，在输入框内点击，边框被遮挡</Text>
+      <Text>实际结果：</Text>
+      <Pressable
+        style={{backgroundColor: '#AFEEEE', borderRadius: 5}}
+        onPress={() => {
+          setChangeValue(!changeValue);
+        }}>
+        <Text
+          style={{
+            fontSize: 16,
+            textAlign: 'center',
+            paddingTop: 10,
+            paddingBottom: 10,
+          }}>
+          按压切换changeValue：{JSON.stringify(changeValue)}
+        </Text>
+      </Pressable>
+      <KeyboardAvoidingView
+        behavior="padding"
+        enabled={changeValue}
+        style={{
+          flex: 1,
+          backgroundColor: 'greeen',
+          justifyContent: 'center',
+          paddingHorizontal: 20,
+          paddingTop: 20,
+        }}>
+        <TextInput
+          defaultValue="defaultValue"
+          style={{
+            borderRadius: 5,
+            borderWidth: 1,
+            height: 300,
+            paddingHorizontal: 10,
+          }}></TextInput>
+      </KeyboardAvoidingView>
+    </View>
+  );
+};
+
+export default ScrollViewTestDemo;
