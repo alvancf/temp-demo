@@ -1,5 +1,5 @@
 git submodule update --init --recursive
-复制testerino文件夹
+// 复制testerino文件夹
 testerino：npm pack，
 react-native-harmony-cli：npm i + npm pack，
 
